@@ -1,5 +1,6 @@
 # AIR temp data
 /build
+/bin
 
 # Environment
 .env
