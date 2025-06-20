@@ -3,7 +3,7 @@ POST http://localhost:3000/v1/auth/sign-in
 Content-Type: application/json
 
 {
-    "username": "emp_001",
+    "username": "admin_user",
     "password": "Password123!@#"
 }
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 ### Create Reimbursement
 POST http://localhost:3000/v1/reimbursement
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NDU2OTgsImlhdCI6MTc1MDQ0MjA5OH0.v5YU_XCYWl9XOzBvff7VviiGjUFEUAfPmEMSf1SRujg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTcyMzQsImlhdCI6MTc1MDQ1MzYzNH0.mAvCjvepJZJ6h8A0bhhf_IcfNDpya0uaSFnBWFIy4fc
 
 {
     "amount": 100000,
@@ -43,15 +43,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 #   "ok": true,
 # }
 
-
 ### Create Overtime
 POST http://localhost:3000/v1/overtime
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTMyNTEsImlhdCI6MTc1MDQ0OTY1MX0.kn1D72aiXLoQ9K5UmcBbE_Zz445-m-8qWLXJV8lSKJo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTcyMzQsImlhdCI6MTc1MDQ1MzYzNH0.mAvCjvepJZJ6h8A0bhhf_IcfNDpya0uaSFnBWFIy4fc
 
 {
     "date": "2025-06-18",
     "total_hours": 1
+}
+
+# Response:
+# {
+#   "ok": true,
+# }
+
+### Create Payroll Period
+POST http://localhost:3000/v1/payroll/period
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ2MDA3NiwiaWF0IjoxNzUwNDU2NDc2fQ.oBoc58g7kpG0Wr7baQ7BbqFmEnZP_BjPabLzbQCDiTg
+
+{
+    "start_date": "2025-06-20",
+    "end_date": "2025-06-21"
 }
 
 # Response:

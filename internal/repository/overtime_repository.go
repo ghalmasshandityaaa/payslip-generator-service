@@ -18,6 +18,7 @@ func NewOvertimeRepository(log *logrus.Logger) *OvertimeRepository {
 		Log: log,
 	}
 }
+
 func (a *OvertimeRepository) FindByDate(db *gorm.DB, date time.Time) (*entity.Overtime, error) {
 	var overtime entity.Overtime
 	if err := db.Where("date = ?", date.Format(time.DateOnly)).First(&overtime).Error; err != nil {

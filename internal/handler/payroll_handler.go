@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"payslip-generator-service/config"
+	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
 	"payslip-generator-service/pkg/validator"
@@ -10,45 +10,43 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type AuthHandler struct {
+type PayrollHandler struct {
 	Log       *logrus.Logger
-	Config    *config.Config
-	UseCase   *usecase.AuthUseCase
+	UseCase   *usecase.PayrollUseCase
 	Validator *validator.Validator
 }
 
-func NewAuthHandler(
-	useCase *usecase.AuthUseCase,
+func NewPayrollHandler(
+	useCase *usecase.PayrollUseCase,
 	logger *logrus.Logger,
-	config *config.Config,
 	validator *validator.Validator,
-) *AuthHandler {
-	return &AuthHandler{
+) *PayrollHandler {
+	return &PayrollHandler{
 		Log:       logger,
 		UseCase:   useCase,
-		Config:    config,
 		Validator: validator,
 	}
 }
 
-func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
-	method := "AuthHandler.SignIn"
+func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
+	method := "PayrollHandler.Create"
 	h.Log.Trace("[BEGIN] - ", method)
 
-	request := new(model.SignInRequest)
+	auth := middleware.GetAuth(ctx)
+	request := new(model.CreatePayrollPeriodRequest)
 	if err := ctx.BodyParser(request); err != nil {
 		return fiber.ErrBadRequest
 	}
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[*model.SignInResponse]{
+		return ctx.JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: errValidation,
 		})
 	}
 
-	accessToken, refreshToken, err := h.UseCase.SignIn(ctx.UserContext(), request)
+	err := h.UseCase.CreatePeriod(ctx.UserContext(), request, auth)
 	if err != nil {
 		return ctx.JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -57,12 +55,7 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 	}
 
 	h.Log.Trace("[END] - ", method)
-
-	return ctx.JSON(model.WebResponse[*model.SignInResponse]{
+	return ctx.JSON(model.WebResponse[*model.CreatePayrollPeriodResponse]{
 		Ok: true,
-		Data: &model.SignInResponse{
-			AccessToken:  accessToken,
-			RefreshToken: refreshToken,
-		},
 	})
 }

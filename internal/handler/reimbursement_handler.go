@@ -48,7 +48,10 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 
 	err := h.UseCase.Create(ctx.UserContext(), request, auth)
 	if err != nil {
-		return err
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: err.Error(),
+		})
 	}
 
 	h.Log.Trace("[END] - ", method)

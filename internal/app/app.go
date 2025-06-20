@@ -32,6 +32,7 @@ func Bootstrap(config *BootstrapConfig) {
 	reimbursementRepository := repository.NewReimbursementRepository(config.Log)
 	attendanceRepository := repository.NewAttendanceRepository(config.Log)
 	overtimeRepository := repository.NewOvertimeRepository(config.Log)
+	payrollRepository := repository.NewPayrollPeriodRepository(config.Log)
 
 	// init use cases
 	authUseCase := usecase.NewAuthUseCase(config.DB, config.Log, config.Config, jwtUtil, userRepository)
@@ -39,18 +40,27 @@ func Bootstrap(config *BootstrapConfig) {
 	reimbursementUseCase := usecase.NewReimbursementUseCase(config.DB, config.Log, reimbursementRepository)
 	attendanceUseCase := usecase.NewAttendanceUseCase(config.DB, config.Log, attendanceRepository)
 	overtimeUseCase := usecase.NewOvertimeUseCase(config.DB, config.Log, overtimeRepository, attendanceRepository)
+	payrollUseCase := usecase.NewPayrollUseCase(config.DB, config.Log, payrollRepository)
 
 	// init handlers
 	authHandler := handler.NewAuthHandler(authUseCase, config.Log, config.Config, config.Validator)
 	reimbursementHandler := handler.NewReimbursementHandler(reimbursementUseCase, config.Log, config.Validator)
 	attendanceHandler := handler.NewAttendanceHandler(attendanceUseCase, config.Log, config.Validator)
 	overtimeHandler := handler.NewOvertimeHandler(overtimeUseCase, config.Log, config.Validator)
+	payrollHandler := handler.NewPayrollHandler(payrollUseCase, config.Log, config.Validator)
 
 	// init middleware
 	authMiddleware := middleware.NewAuthMiddleware(employeeUseCase, jwtUtil)
 
 	// init routes
-	appRoute := route.NewRoute(config.App, config.Log, authMiddleware, authHandler, reimbursementHandler, attendanceHandler, overtimeHandler)
+	appRoute := route.NewRoute(
+		config.App, config.Log, authMiddleware,
+		authHandler,
+		reimbursementHandler,
+		attendanceHandler,
+		overtimeHandler,
+		payrollHandler,
+	)
 
 	// setup routes
 	appRoute.Setup()
