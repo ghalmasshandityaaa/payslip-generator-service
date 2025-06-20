@@ -45,6 +45,9 @@ func (a *OvertimeUseCase) Create(
 	db := a.DB.WithContext(ctx)
 
 	date, err := time.Parse(time.DateOnly, request.Date)
+	if err != nil {
+		return fmt.Errorf("overtime/invalid-date")
+	}
 
 	_, err = a.AttendanceRepository.FindByDate(db, date)
 	if err != nil {
