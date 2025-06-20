@@ -1,0 +1,71 @@
+{
+    "App": {
+        "Name": "Payslip Generator Service",
+        "Version": "1.0.0",
+        "Domain": "localhost",
+        "Host": "localhost",
+        "Port": 3000,
+        "Env": "Production",
+        "Debug": true,
+        "ReadTimeout": 5,
+        "WriteTimeout": 5,
+        "Prefork": false,
+        "SSL": true
+    },
+    "Security": {
+        "CORS": {
+            "AllowedOrigins": "http://localhost",
+            "AllowedMethods": "GET,POST,PUT,DELETE,OPTIONS",
+            "AllowCredentials": true
+        },
+        "CSRF": {
+            "Enabled": true,
+            "CookieName": "payslip_generator_service_csrf",
+            "HeaderName": "X-CSRF-Token"
+        },
+        "JWT": {
+            "Issuer": "https://payslip-generator-service.com",
+            "Audience": "https://payslip-generator-service.com",
+            "Subject": "payslip_generator_service",
+            "SigningMethod": "HS256",
+            "AccessTokenLifetime": 1,
+            "AccessTokenSecret": "apaajayangpentingaman",
+            "RefreshTokenLifetime": 720,
+            "RefreshTokenSecret": "namagnitnepgnayajaapa"
+        },
+        "RateLimit": {
+            "Duration": 60,
+            "MaxRequests": 100
+        },
+        "Crypto": {
+            "Key": "suksesadalahpedomankitabersamaya"
+        },
+        "Cookie": {
+            "Name": "SHR-Cookie",
+            "Secure": true,
+            "HttpOnly": true,
+            "SameSite": "Lax",
+            "Domain": "localhost",
+            "MaxAge": 518400,
+            "Key": "buldjhSPzLpCxleTOlv4hzLkXtvbfnuvMtPS8DM+oKQ="
+        }
+    },
+    "Logger": {
+        "Level": 6,
+        "Pretty": false
+    },
+    "Postgres": {
+        "ConnMaxIdleTime": 30,
+        "ConnMaxLifetime": 3600,
+        "MaxIdleCons": 10,
+        "MaxOpenCons": 25,
+        "User": "user_yc",
+        "Password": "npg_pCDfEV3vBxK8",
+        "Host": "ep-frosty-violet-a166yppn.ap-southeast-1.pg.koyeb.app",
+        "Port": 5432,
+        "Dbname": "payslip",
+        "Driver": "postgres",
+        "SSLMode": "require",
+        "DryRun": false
+    }
+}
