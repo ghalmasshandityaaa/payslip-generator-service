@@ -30,6 +30,31 @@ func NewPayrollUseCase(
 	}
 }
 
+func (a *PayrollUseCase) ListPeriod(ctx context.Context, request *model.ListPayrollPeriodRequest) ([]entity.PayrollPeriod, int64, error) {
+	method := "PayrollUseCase.ListPeriod"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, request)
+
+	db := a.DB.WithContext(ctx)
+	data, total, err := a.payrollPeriod.FindAllWithPagination(db, &model.PaginationOptions{
+		Page:     request.Page,
+		PageSize: request.PageSize,
+		Order: []model.OrderBy{
+			{
+				Column:    "start_date",
+				Direction: model.OrderDirectionAsc,
+			},
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	a.Log.Trace("[END] - ", method)
+
+	return data, total, nil
+}
+
 func (a *PayrollUseCase) CreatePeriod(
 	ctx context.Context,
 	request *model.CreatePayrollPeriodRequest,

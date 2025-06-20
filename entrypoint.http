@@ -72,3 +72,32 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WO
 # {
 #   "ok": true,
 # }
+
+
+### List Payroll Period(With Pagination)
+GET http://localhost:3000/v1/payroll/period?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ2NDUzMywiaWF0IjoxNzUwNDYwOTMzfQ.xSJK8NzfC0YbzEnSaRSFxYbvAGZu4enWRw3aAEd_Nyo
+
+# Response:
+# {
+#   "ok": true,
+#   "data": [
+#     {
+#       "id": "01JY7PQRVBZVVMGAN0FQXDQ1B1",
+#       "start_date": "2025-06-20T00:00:00Z",
+#       "end_date": "2025-06-21T00:00:00Z",
+#       "is_generated": false,
+#       "created_at": "2025-06-21T05:18:21.931273+07:00",
+#       "created_by": "01JY2PMV9XAB7ZNWDH23D1VJT0",
+#       "updated_at": "2025-06-21T05:18:21.992274+07:00",
+#       "updated_by": null
+#     },
+#   ],
+#   "paging": {
+#     "page": 1,
+#     "page_size": 10,
+#     "total_item": 1,
+#     "total_page": 1
+#   }
+# }
