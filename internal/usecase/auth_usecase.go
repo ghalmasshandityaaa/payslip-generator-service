@@ -50,7 +50,7 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return "", "", fmt.Errorf("employee/not-found")
 		}
-		return "", "", err
+		panic(err)
 	}
 
 	match := utils.ComparePassword(request.Password, employee.Password)

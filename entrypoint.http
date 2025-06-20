@@ -31,11 +31,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 ### Create Attendance
 POST http://localhost:3000/v1/attendance
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NDkzOTcsImlhdCI6MTc1MDQ0NTc5N30.HNN3wu4L4-oNL0kXYlaNZOVjom_2befuB1RJ6z7F2r4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTMyNTEsImlhdCI6MTc1MDQ0OTY1MX0.kn1D72aiXLoQ9K5UmcBbE_Zz445-m-8qWLXJV8lSKJo
 
 {
-    "start_time": "2025-06-20T08:00:00Z",
-    "end_time": "2025-06-20T08:00:01Z"
+    "start_time": "2025-06-18T08:00:00Z",
+    "end_time": "2025-06-18T08:00:01Z"
+}
+
+# Response:
+# {
+#   "ok": true,
+# }
+
+
+### Create Overtime
+POST http://localhost:3000/v1/overtime
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTMyNTEsImlhdCI6MTc1MDQ0OTY1MX0.kn1D72aiXLoQ9K5UmcBbE_Zz445-m-8qWLXJV8lSKJo
+
+{
+    "date": "2025-06-18",
+    "total_hours": 1
 }
 
 # Response:

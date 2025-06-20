@@ -42,7 +42,7 @@ func (a *EmployeeUseCase) GetById(ctx context.Context, employeeID ulid.ULID) (*e
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, fmt.Errorf("employee/not-found")
 		}
-		return nil, err
+		panic(err)
 	}
 
 	a.Log.Trace("[END] - ", method)

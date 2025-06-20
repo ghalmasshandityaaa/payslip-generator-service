@@ -14,6 +14,7 @@ type Route struct {
 	AuthHandler          *handler.AuthHandler
 	ReimbursementHandler *handler.ReimbursementHandler
 	AttendanceHandler    *handler.AttendanceHandler
+	OvertimeHandler      *handler.OvertimeHandler
 }
 
 func NewRoute(
@@ -23,6 +24,7 @@ func NewRoute(
 	authHandler *handler.AuthHandler,
 	reimbursementHandler *handler.ReimbursementHandler,
 	attendanceHandler *handler.AttendanceHandler,
+	overtimeHandler *handler.OvertimeHandler,
 ) *Route {
 	return &Route{
 		App:                  app,
@@ -31,6 +33,7 @@ func NewRoute(
 		AuthHandler:          authHandler,
 		ReimbursementHandler: reimbursementHandler,
 		AttendanceHandler:    attendanceHandler,
+		OvertimeHandler:      overtimeHandler,
 	}
 }
 
@@ -40,4 +43,5 @@ func (a *Route) Setup() {
 	a.SetupAuthRoute()
 	a.SetupReimbursementRoute()
 	a.SetupAttendanceRoute()
+	a.SetupOvertimeRoute()
 }

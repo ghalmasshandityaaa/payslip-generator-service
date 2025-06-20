@@ -19,12 +19,12 @@ type ReimbursementUseCase struct {
 func NewReimbursementUseCase(
 	db *gorm.DB,
 	logger *logrus.Logger,
-	employeeRepository *repository.ReimbursementRepository,
+	reimbursementRepository *repository.ReimbursementRepository,
 ) *ReimbursementUseCase {
 	return &ReimbursementUseCase{
 		DB:                      db,
 		Log:                     logger,
-		ReimbursementRepository: employeeRepository,
+		ReimbursementRepository: reimbursementRepository,
 	}
 }
 
@@ -48,7 +48,7 @@ func (a *ReimbursementUseCase) Create(
 	a.Log.Debug("reimbursement - ", method, reimbursement)
 
 	if err := a.ReimbursementRepository.Create(db, reimbursement); err != nil {
-		return err
+		panic(err)
 	}
 
 	a.Log.Trace("[END] - ", method)

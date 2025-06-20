@@ -21,12 +21,12 @@ type AttendanceUseCase struct {
 func NewAttendanceUseCase(
 	db *gorm.DB,
 	logger *logrus.Logger,
-	employeeRepository *repository.AttendanceRepository,
+	attendanceRepository *repository.AttendanceRepository,
 ) *AttendanceUseCase {
 	return &AttendanceUseCase{
 		DB:                   db,
 		Log:                  logger,
-		AttendanceRepository: employeeRepository,
+		AttendanceRepository: attendanceRepository,
 	}
 }
 
@@ -69,8 +69,17 @@ func (a *AttendanceUseCase) Create(
 
 	a.Log.Debug("attendance - ", method, attendance)
 
+	todayAttendance, err := a.AttendanceRepository.FindByDate(db, attendance.StartTime)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		panic(err)
+	}
+
+	if todayAttendance != nil {
+		return fmt.Errorf("attendance/already-exists")
+	}
+
 	if err := a.AttendanceRepository.Create(db, attendance); err != nil {
-		return err
+		panic(err)
 	}
 
 	a.Log.Trace("[END] - ", method)
