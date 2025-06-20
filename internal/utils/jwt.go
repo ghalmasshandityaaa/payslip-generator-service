@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/oklog/ulid/v2"
 )
 
 type JwtUtil struct {
@@ -25,9 +26,9 @@ type Claims struct {
 }
 
 // GenerateAccessToken generates a new access token
-func (j *JwtUtil) GenerateAccessToken(ID string) (string, error) {
+func (j *JwtUtil) GenerateAccessToken(ID ulid.ULID) (string, error) {
 	claims := &Claims{
-		ID: ID,
+		ID: ID.String(),
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.Config.Security.Jwt.AccessTokenLifetime) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -39,9 +40,9 @@ func (j *JwtUtil) GenerateAccessToken(ID string) (string, error) {
 }
 
 // GenerateRefreshToken generates a new refresh token
-func (j *JwtUtil) GenerateRefreshToken(ID string) (string, error) {
+func (j *JwtUtil) GenerateRefreshToken(ID ulid.ULID) (string, error) {
 	claims := &Claims{
-		ID: ID,
+		ID: ID.String(),
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.Config.Security.Jwt.RefreshTokenLifetime) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -96,5 +97,5 @@ func (j *JwtUtil) RefreshAccessToken(refreshToken string) (string, error) {
 	}
 
 	// Generate a new access token
-	return j.GenerateAccessToken(claims.ID)
+	return j.GenerateAccessToken(ulid.MustParse(claims.ID))
 }

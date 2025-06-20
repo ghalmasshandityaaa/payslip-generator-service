@@ -32,6 +32,9 @@ func NewAuthHandler(
 }
 
 func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
+	method := "AuthHandler.SignIn"
+	h.Log.Trace(method, "BEGIN")
+
 	request := new(model.SignInRequest)
 	if err := ctx.BodyParser(request); err != nil {
 		return fiber.ErrBadRequest
@@ -49,6 +52,8 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
+	h.Log.Trace(method, "END")
 
 	return ctx.JSON(model.WebResponse[*model.SignInResponse]{
 		Ok: true,

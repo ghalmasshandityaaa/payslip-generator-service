@@ -1,0 +1,14 @@
+### Sign In
+POST http://localhost:3000/v1/auth/sign-in
+Content-Type: application/json
+
+{
+    "username": "admin_user",
+    "password": "Password123!@#"
+}
+
+# Response:
+# {
+#   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+#   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+# }
