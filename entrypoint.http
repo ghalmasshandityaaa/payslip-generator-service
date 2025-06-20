@@ -3,7 +3,7 @@ POST http://localhost:3000/v1/auth/sign-in
 Content-Type: application/json
 
 {
-    "username": "admin_user",
+    "username": "emp_001",
     "password": "Password123!@#"
 }
 
@@ -11,4 +11,19 @@ Content-Type: application/json
 # {
 #   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
 #   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+# }
+
+### Create Reimbursement
+POST http://localhost:3000/v1/reimbursement
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NDU2OTgsImlhdCI6MTc1MDQ0MjA5OH0.v5YU_XCYWl9XOzBvff7VviiGjUFEUAfPmEMSf1SRujg
+
+{
+    "amount": 100000,
+    "description": "Reimbursement for travel expenses"
+}
+
+# Response:
+# {
+#   "ok": true,
 # }

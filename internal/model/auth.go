@@ -1,10 +1,15 @@
 package model
 
-import (
-	"github.com/oklog/ulid/v2"
+import "payslip-generator-service/pkg/database/gorm"
+
+type Role string
+
+const (
+	RoleAdmin    Role = "admin"
+	RoleEmployee Role = "employee"
 )
 
 type Auth struct {
-	ID      ulid.ULID
+	ID      gorm.ULID
 	IsAdmin bool
 }

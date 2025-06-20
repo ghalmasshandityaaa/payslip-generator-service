@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"runtime"
 	"payslip-generator-service/config"
 	"payslip-generator-service/internal/app"
 	"payslip-generator-service/pkg/database/gorm"
@@ -12,6 +11,7 @@ import (
 	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/middleware"
 	"payslip-generator-service/pkg/validator"
+	"runtime"
 	"sync"
 	"syscall"
 	"time"
@@ -40,7 +40,7 @@ func main() {
 	log.Infof("initialized fiber server")
 
 	// Setup middleware
-	middleware.SetupMiddleware(fiberApp, conf)
+	middleware.SetupMiddleware(fiberApp, conf, log)
 	log.Infof("setup middleware for fiber server")
 
 	// Bootstrap application
@@ -51,6 +51,9 @@ func main() {
 		Config:    conf,
 		Validator: newValidator,
 	})
+
+	log.Info("setup exception middleware")
+	middleware.SetupExceptionMiddleware(fiberApp)
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, os.Interrupt, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)

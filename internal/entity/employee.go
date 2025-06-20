@@ -3,12 +3,14 @@ package entity
 import (
 	"time"
 
+	"payslip-generator-service/pkg/database/gorm"
+
 	"github.com/oklog/ulid/v2"
 )
 
 // Employee model
 type Employee struct {
-	ID        ulid.ULID  `json:"id" gorm:"column:id;type:ulid;primaryKey"`
+	ID        gorm.ULID  `json:"id" gorm:"column:id;type:ulid;primaryKey"`
 	Username  string     `json:"username" gorm:"column:username;size:50;not null;unique"`
 	Password  string     `json:"-" gorm:"column:password;type:text;not null"`
 	Salary    int        `json:"salary" gorm:"column:salary;type:integer;not null"`
@@ -26,7 +28,7 @@ type CreateEmployeeProps struct {
 
 func NewEmployee(props *CreateEmployeeProps) *Employee {
 	return &Employee{
-		ID:        ulid.Make(),
+		ID:        gorm.ULID(ulid.Make()),
 		Username:  props.Username,
 		Password:  props.Password,
 		Salary:    props.Salary,

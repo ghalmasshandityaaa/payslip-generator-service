@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/oklog/ulid/v2"
+	ulid "payslip-generator-service/pkg/database/gorm"
+
 	"gorm.io/gorm"
 )
 
@@ -28,5 +29,5 @@ func (r *Repository[T]) CountById(db *gorm.DB, id any) (int64, error) {
 }
 
 func (r *Repository[T]) FindById(db *gorm.DB, entity *T, id ulid.ULID) error {
-	return db.Debug().Where("id = ?", id.String()).Take(entity).Error
+	return db.Debug().Where("id = ?", id).Take(entity).Error
 }

@@ -3,11 +3,12 @@ package fiber
 import (
 	"errors"
 	"fmt"
+	"payslip-generator-service/config"
+	"time"
+
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
-	"payslip-generator-service/config"
-	"time"
 )
 
 func NewFiber(config *config.Config, log *logrus.Logger) *fiber.App {
@@ -39,7 +40,7 @@ func errorHandler(log *logrus.Logger) fiber.ErrorHandler {
 
 		return ctx.Status(code).JSON(fiber.Map{
 			"ok":     false,
-			"errors": err.Error(),
+			"errors": "internal/server-error",
 		})
 	}
 }

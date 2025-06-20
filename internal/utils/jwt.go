@@ -3,10 +3,11 @@ package utils
 import (
 	"fmt"
 	"payslip-generator-service/config"
+	"payslip-generator-service/internal/entity"
+	"payslip-generator-service/pkg/database/gorm"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/oklog/ulid/v2"
 )
 
 type JwtUtil struct {
@@ -21,14 +22,16 @@ func NewJwtUtil(config *config.Config) *JwtUtil {
 
 // Claims structure for JWT
 type Claims struct {
-	ID string `json:"id"`
+	ID      gorm.ULID `json:"id"`
+	IsAdmin bool      `json:"is_admin"`
 	jwt.RegisteredClaims
 }
 
 // GenerateAccessToken generates a new access token
-func (j *JwtUtil) GenerateAccessToken(ID ulid.ULID) (string, error) {
+func (j *JwtUtil) GenerateAccessToken(employee *entity.Employee) (string, error) {
 	claims := &Claims{
-		ID: ID.String(),
+		ID:      employee.ID,
+		IsAdmin: employee.IsAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.Config.Security.Jwt.AccessTokenLifetime) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -40,9 +43,10 @@ func (j *JwtUtil) GenerateAccessToken(ID ulid.ULID) (string, error) {
 }
 
 // GenerateRefreshToken generates a new refresh token
-func (j *JwtUtil) GenerateRefreshToken(ID ulid.ULID) (string, error) {
+func (j *JwtUtil) GenerateRefreshToken(employee *entity.Employee) (string, error) {
 	claims := &Claims{
-		ID: ID.String(),
+		ID:      employee.ID,
+		IsAdmin: employee.IsAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.Config.Security.Jwt.RefreshTokenLifetime) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -67,35 +71,4 @@ func (j *JwtUtil) ValidateToken(tokenString string) (*Claims, error) {
 	}
 
 	return nil, err
-}
-
-// ValidateRefreshToken validates the refresh token string and returns the claims
-func (j *JwtUtil) ValidateRefreshToken(tokenString string) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(j.Config.Security.Jwt.RefreshTokenSecret), nil
-	})
-
-	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-		return claims, nil
-	}
-
-	return nil, err
-}
-
-// RefreshAccessToken generates a new access token using a valid refresh token
-func (j *JwtUtil) RefreshAccessToken(refreshToken string) (string, error) {
-	claims, err := j.ValidateRefreshToken(refreshToken)
-	if err != nil {
-		return "", fmt.Errorf("invalid refresh token")
-	}
-
-	if time.Now().After(claims.ExpiresAt.Time) {
-		return "", fmt.Errorf("refresh token expired")
-	}
-
-	// Generate a new access token
-	return j.GenerateAccessToken(ulid.MustParse(claims.ID))
 }

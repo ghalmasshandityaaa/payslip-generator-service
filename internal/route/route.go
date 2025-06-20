@@ -8,10 +8,11 @@ import (
 )
 
 type Route struct {
-	App            *fiber.App
-	Log            *logrus.Logger
-	AuthMiddleware fiber.Handler
-	AuthHandler    *handler.AuthHandler
+	App                  *fiber.App
+	Log                  *logrus.Logger
+	AuthMiddleware       fiber.Handler
+	AuthHandler          *handler.AuthHandler
+	ReimbursementHandler *handler.ReimbursementHandler
 }
 
 func NewRoute(
@@ -19,12 +20,14 @@ func NewRoute(
 	logger *logrus.Logger,
 	authMiddleware fiber.Handler,
 	authHandler *handler.AuthHandler,
+	reimbursementHandler *handler.ReimbursementHandler,
 ) *Route {
 	return &Route{
-		App:            app,
-		Log:            logger,
-		AuthMiddleware: authMiddleware,
-		AuthHandler:    authHandler,
+		App:                  app,
+		Log:                  logger,
+		AuthMiddleware:       authMiddleware,
+		AuthHandler:          authHandler,
+		ReimbursementHandler: reimbursementHandler,
 	}
 }
 
@@ -32,4 +35,5 @@ func (a *Route) Setup() {
 	a.Log.Info("setting up routes")
 
 	a.SetupAuthRoute()
+	a.SetupReimbursementRoute()
 }

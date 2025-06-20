@@ -1,11 +1,13 @@
 package middleware
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"payslip-generator-service/config"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 )
 
-func SetupMiddleware(app *fiber.App, config *config.Config) {
+func SetupMiddleware(app *fiber.App, config *config.Config, logger *logrus.Logger) {
 	app.Use(SetupHelmetMiddleware())
 	app.Use(SetupRecoverMiddleware())
 	app.Use(SetupCompressionMiddleware())
@@ -14,4 +16,8 @@ func SetupMiddleware(app *fiber.App, config *config.Config) {
 	app.Use(SetupRateLimiterMiddleware(config))
 	app.Use(SetupCookieMiddleware(config))
 	app.Use(SetupProbesMiddleware())
+}
+
+func SetupExceptionMiddleware(app *fiber.App) {
+	app.Use(SetupNotFoundMiddleware())
 }

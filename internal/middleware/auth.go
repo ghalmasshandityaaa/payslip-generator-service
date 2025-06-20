@@ -6,8 +6,6 @@ import (
 	"payslip-generator-service/internal/utils"
 	"strings"
 
-	"github.com/oklog/ulid/v2"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -18,7 +16,12 @@ func NewAuthMiddleware(employeeUseCase *usecase.EmployeeUseCase, util *utils.Jwt
 		}
 
 		token := request.Token
-		if strings.HasPrefix(token, "Bearer ") {
+		if token == "NOT_FOUND" {
+			return ctx.Status(fiber.StatusUnauthorized).JSON(model.WebResponse[any]{
+				Ok:     false,
+				Errors: "auth/unauthorized",
+			})
+		} else if strings.HasPrefix(token, "Bearer ") {
 			token = strings.TrimPrefix(token, "Bearer ")
 		}
 
@@ -30,8 +33,8 @@ func NewAuthMiddleware(employeeUseCase *usecase.EmployeeUseCase, util *utils.Jwt
 			})
 		}
 
-		employee, err := employeeUseCase.GetById(ctx.UserContext(), ulid.MustParse(claim.ID))
-		if err != nil {
+		employee, err := employeeUseCase.GetById(ctx.UserContext(), claim.ID)
+		if err != nil || employee == nil {
 			return ctx.Status(fiber.StatusUnauthorized).JSON(model.WebResponse[any]{
 				Ok:     false,
 				Errors: "auth/unauthorized",

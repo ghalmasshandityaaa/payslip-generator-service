@@ -40,8 +40,8 @@ func NewAuthUseCase(
 
 func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) (string, string, error) {
 	method := "AuthUseCase.SignIn"
-	a.Log.Trace(method, "BEGIN")
-	a.Log.Debug(method, "request", request)
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, request)
 
 	db := a.DB.WithContext(ctx)
 
@@ -72,13 +72,13 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 
 	// Generate access token in goroutine
 	go func() {
-		token, err := a.JwtUtil.GenerateAccessToken(employee.ID)
+		token, err := a.JwtUtil.GenerateAccessToken(employee)
 		accessTokenChan <- tokenResult{token: token, err: err}
 	}()
 
 	// Generate refresh token in goroutine
 	go func() {
-		token, err := a.JwtUtil.GenerateRefreshToken(employee.ID)
+		token, err := a.JwtUtil.GenerateRefreshToken(employee)
 		refreshTokenChan <- tokenResult{token: token, err: err}
 	}()
 
@@ -118,7 +118,7 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 		return "", "", refreshErr
 	}
 
-	a.Log.Trace(method, "END")
+	a.Log.Trace("[END] - ", method)
 
 	return accessToken, refreshToken, nil
 }

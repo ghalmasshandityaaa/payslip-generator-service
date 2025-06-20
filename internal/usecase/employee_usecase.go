@@ -2,10 +2,12 @@ package usecase
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/repository"
+	ulid "payslip-generator-service/pkg/database/gorm"
 
-	"github.com/oklog/ulid/v2"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -29,5 +31,20 @@ func NewEmployeeUseCase(
 }
 
 func (a *EmployeeUseCase) GetById(ctx context.Context, employeeID ulid.ULID) (*entity.Employee, error) {
-	return nil, nil
+	method := "EmployeeUseCase.GetById"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, map[string]interface{}{"employeeID": employeeID})
+
+	db := a.DB.WithContext(ctx)
+
+	employee := new(entity.Employee)
+	if err := a.EmployeeRepository.FindById(db, employee, employeeID); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("employee/not-found")
+		}
+		return nil, err
+	}
+
+	a.Log.Trace("[END] - ", method)
+	return employee, nil
 }
