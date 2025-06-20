@@ -52,6 +52,10 @@ func NewValidator() *Validator {
 	if err != nil {
 		panic(fmt.Errorf("failed register date custom validation: %v", err))
 	}
+	err = v.RegisterValidation("is-valid-datetime", validateDateTime)
+	if err != nil {
+		panic(fmt.Errorf("failed register datetime custom validation: %v", err))
+	}
 
 	return &Validator{Validate: v}
 }
@@ -115,6 +119,28 @@ func validateDate(fl validator.FieldLevel) bool {
 	date := fl.Field().String()
 	_, err := time.Parse("2006-01-02", date)
 	return err == nil
+}
+
+// validateDateTime validates if the field is a valid RFC3339 datetime
+func validateDateTime(fl validator.FieldLevel) bool {
+	datetime := fl.Field().String()
+	if datetime == "" {
+		return true
+	}
+
+	// Format: 2006-01-02T15:04:05Z07:00
+	_, err := time.Parse(time.RFC3339, datetime)
+	if err == nil {
+		return true
+	}
+
+	// Format: 2006-01-02T15:04:05
+	_, err = time.Parse("2006-01-02T15:04:05", datetime)
+	if err == nil {
+		return true
+	}
+
+	return false
 }
 
 func (v *Validator) ValidateStruct(obj interface{}) []*ErrorValidation {

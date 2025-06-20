@@ -30,21 +30,24 @@ func Bootstrap(config *BootstrapConfig) {
 	// init repositories
 	userRepository := repository.NewEmployeeRepository(config.Log)
 	reimbursementRepository := repository.NewReimbursementRepository(config.Log)
+	attendanceRepository := repository.NewAttendanceRepository(config.Log)
 
 	// init use cases
 	authUseCase := usecase.NewAuthUseCase(config.DB, config.Log, config.Config, jwtUtil, userRepository)
 	employeeUseCase := usecase.NewEmployeeUseCase(config.DB, config.Log, userRepository)
 	reimbursementUseCase := usecase.NewReimbursementUseCase(config.DB, config.Log, reimbursementRepository)
+	attendanceUseCase := usecase.NewAttendanceUseCase(config.DB, config.Log, attendanceRepository)
 
 	// init handlers
 	authHandler := handler.NewAuthHandler(authUseCase, config.Log, config.Config, config.Validator)
 	reimbursementHandler := handler.NewReimbursementHandler(reimbursementUseCase, config.Log, config.Validator)
+	attendanceHandler := handler.NewAttendanceHandler(attendanceUseCase, config.Log, config.Validator)
 
 	// init middleware
 	authMiddleware := middleware.NewAuthMiddleware(employeeUseCase, jwtUtil)
 
 	// init routes
-	appRoute := route.NewRoute(config.App, config.Log, authMiddleware, authHandler, reimbursementHandler)
+	appRoute := route.NewRoute(config.App, config.Log, authMiddleware, authHandler, reimbursementHandler, attendanceHandler)
 
 	// setup routes
 	appRoute.Setup()

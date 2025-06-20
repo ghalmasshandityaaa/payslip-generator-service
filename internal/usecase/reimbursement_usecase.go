@@ -32,7 +32,7 @@ func (a *ReimbursementUseCase) Create(
 	ctx context.Context,
 	request *model.CreateReimbursementRequest,
 	auth *model.Auth,
-) (*model.CreateReimbursementResponse, error) {
+) error {
 	method := "ReimbursementUseCase.Create"
 	a.Log.Trace("[BEGIN] - ", method)
 	a.Log.Debug("request - ", method, request)
@@ -48,10 +48,10 @@ func (a *ReimbursementUseCase) Create(
 	a.Log.Debug("reimbursement - ", method, reimbursement)
 
 	if err := a.ReimbursementRepository.Create(db, reimbursement); err != nil {
-		return nil, err
+		return err
 	}
 
 	a.Log.Trace("[END] - ", method)
 
-	return nil, nil
+	return nil
 }

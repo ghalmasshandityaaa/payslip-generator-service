@@ -12,5 +12,6 @@ func SetupRequestIDMiddleware() fiber.Handler {
 		Generator: func() string {
 			return ulid.Make().String()
 		},
+		ContextKey: "request_id",
 	})
 }

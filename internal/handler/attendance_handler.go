@@ -10,31 +10,32 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ReimbursementHandler struct {
+type AttendanceHandler struct {
 	Log       *logrus.Logger
-	UseCase   *usecase.ReimbursementUseCase
+	UseCase   *usecase.AttendanceUseCase
 	Validator *validator.Validator
 }
 
-func NewReimbursementHandler(
-	useCase *usecase.ReimbursementUseCase,
+func NewAttendanceHandler(
+	useCase *usecase.AttendanceUseCase,
 	logger *logrus.Logger,
 	validator *validator.Validator,
-) *ReimbursementHandler {
-	return &ReimbursementHandler{
+) *AttendanceHandler {
+	return &AttendanceHandler{
 		Log:       logger,
 		UseCase:   useCase,
 		Validator: validator,
 	}
 }
 
-func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
-	method := "ReimbursementHandler.Create"
+func (h *AttendanceHandler) Create(ctx *fiber.Ctx) error {
+	method := "AttendanceHandler.Create"
 	h.Log.Trace("[BEGIN] - ", method)
 
 	auth := middleware.GetAuth(ctx)
-	request := new(model.CreateReimbursementRequest)
+	request := new(model.CreateAttendanceRequest)
 	if err := ctx.BodyParser(request); err != nil {
+		h.Log.Error("failed parse body: ", err.Error())
 		return fiber.ErrBadRequest
 	}
 
@@ -48,11 +49,15 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 
 	err := h.UseCase.Create(ctx.UserContext(), request, auth)
 	if err != nil {
-		return err
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: err.Error(),
+		})
 	}
 
 	h.Log.Trace("[END] - ", method)
-	return ctx.JSON(model.WebResponse[*model.CreateReimbursementResponse]{
+
+	return ctx.JSON(model.WebResponse[*model.CreateAttendanceResponse]{
 		Ok: true,
 	})
 }

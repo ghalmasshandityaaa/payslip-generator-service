@@ -27,3 +27,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 # {
 #   "ok": true,
 # }
+
+### Create Attendance
+POST http://localhost:3000/v1/attendance
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NDkzOTcsImlhdCI6MTc1MDQ0NTc5N30.HNN3wu4L4-oNL0kXYlaNZOVjom_2befuB1RJ6z7F2r4
+
+{
+    "start_time": "2025-06-20T08:00:00Z",
+    "end_time": "2025-06-20T08:00:01Z"
+}
+
+# Response:
+# {
+#   "ok": true,
+# }
