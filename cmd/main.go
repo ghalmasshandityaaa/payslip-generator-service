@@ -46,7 +46,7 @@ func main() {
 	log.Info("initialized validator")
 
 	// Connect to PostgresSQL under the GORM ORM
-	db := gorm.NewGormDB(conf)
+	db := gorm.NewGormDB(conf, log)
 	log.Infof("database connected, host: %s", conf.Postgres.Host)
 	defer db.Close()
 
