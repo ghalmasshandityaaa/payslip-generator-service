@@ -13,7 +13,8 @@ type PayrollPeriod struct {
 	ID          gorm.ULID  `json:"id" gorm:"column:id;type:ulid;primaryKey"`
 	StartDate   time.Time  `json:"start_date" gorm:"column:start_date;type:date;not null"`
 	EndDate     time.Time  `json:"end_date" gorm:"column:end_date;type:date;not null"`
-	IsGenerated bool       `json:"is_generated" gorm:"column:is_generated;type:boolean;not null;default:false"`
+	ProcessedAt *time.Time `json:"processed_at" gorm:"column:processed_at;type:timestamp with time zone"`
+	ProcessedBy *gorm.ULID `json:"processed_by" gorm:"column:processed_by;type:ulid"`
 	CreatedAt   time.Time  `json:"created_at" gorm:"column:created_at;type:timestamp with time zone;not null;default:CURRENT_TIMESTAMP"`
 	CreatedBy   gorm.ULID  `json:"created_by" gorm:"column:created_by;type:ulid;not null"`
 	UpdatedAt   *time.Time `json:"updated_at" gorm:"column:updated_at;type:timestamp with time zone"`
@@ -32,12 +33,11 @@ type CreatePayrollPeriodProps struct {
 
 func NewPayrollPeriod(props *CreatePayrollPeriodProps) *PayrollPeriod {
 	return &PayrollPeriod{
-		ID:          gorm.ULID(ulid.Make()),
-		StartDate:   props.StartDate,
-		EndDate:     props.EndDate,
-		IsGenerated: false,
-		CreatedAt:   time.Now(),
-		CreatedBy:   props.CreatedBy,
+		ID:        gorm.ULID(ulid.Make()),
+		StartDate: props.StartDate,
+		EndDate:   props.EndDate,
+		CreatedAt: time.Now(),
+		CreatedBy: props.CreatedBy,
 	}
 }
 
@@ -60,12 +60,11 @@ func (p *PayrollPeriod) IsValidDateRange() bool {
 	return p.StartDate.Before(p.EndDate) || p.StartDate.Equal(p.EndDate)
 }
 
-// MarkAsGenerated marks the payroll as generated
-func (p *PayrollPeriod) MarkAsGenerated(updatedBy gorm.ULID) {
+// Process marks the payroll as processed
+func (p *PayrollPeriod) Process(processedBy gorm.ULID) {
 	now := time.Now()
-	p.IsGenerated = true
-	p.UpdatedAt = &now
-	p.UpdatedBy = &updatedBy
+	p.ProcessedAt = &now
+	p.ProcessedBy = &processedBy
 }
 
 // Update updates the payroll with new data
@@ -94,4 +93,9 @@ func (p *PayrollPeriod) IsFuturePeriod() bool {
 func (p *PayrollPeriod) IsPastPeriod() bool {
 	now := time.Now()
 	return p.EndDate.Before(now)
+}
+
+// IsProcessed checks if the payroll period is processed
+func (p *PayrollPeriod) IsProcessed() bool {
+	return p.ProcessedAt != nil && p.ProcessedBy != nil
 }

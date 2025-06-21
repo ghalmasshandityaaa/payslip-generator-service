@@ -61,11 +61,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 ### Create Payroll Period
 POST http://localhost:3000/v1/payroll/period
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ2MDA3NiwiaWF0IjoxNzUwNDU2NDc2fQ.oBoc58g7kpG0Wr7baQ7BbqFmEnZP_BjPabLzbQCDiTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5Mzg4MSwiaWF0IjoxNzUwNDkwMjgxfQ.lP5u43JPR-1tCLMNhtXmkjIk4a0_6GEiT1ge3OXO2WA
 
 {
-    "start_date": "2025-06-20",
-    "end_date": "2025-06-21"
+    "start_date": "2025-06-22",
+    "end_date": "2025-06-22"
 }
 
 # Response:
@@ -77,7 +77,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WO
 ### List Payroll Period(With Pagination)
 GET http://localhost:3000/v1/payroll/period?page=1&size=10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ2NDUzMywiaWF0IjoxNzUwNDYwOTMzfQ.xSJK8NzfC0YbzEnSaRSFxYbvAGZu4enWRw3aAEd_Nyo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5Mzg4MSwiaWF0IjoxNzUwNDkwMjgxfQ.lP5u43JPR-1tCLMNhtXmkjIk4a0_6GEiT1ge3OXO2WA
 
 # Response:
 # {
@@ -100,4 +100,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WO
 #     "total_item": 1,
 #     "total_page": 1
 #   }
+# }
+
+### Process Payroll Period
+POST http://localhost:3000/v1/payroll/process
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5Mzg4MSwiaWF0IjoxNzUwNDkwMjgxfQ.lP5u43JPR-1tCLMNhtXmkjIk4a0_6GEiT1ge3OXO2WA
+
+{
+    "period_id": "01JY8PAY18K09E1XS98GX8WC2K"
+}
+
+# Response:
+# {
+#   "ok": true
 # }

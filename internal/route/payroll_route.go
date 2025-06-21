@@ -13,4 +13,7 @@ func (a *Route) SetupPayrollRoute() {
 
 	a.App.Post("/v1/payroll/period", a.AuthMiddleware, middleware.RoleMiddleware(model.RoleAdmin), a.PayrollHandler.CreatePeriod)
 	a.Log.Info("mapped {/v1/payroll/period, POST} route")
+
+	a.App.Post("/v1/payroll/process", a.AuthMiddleware, middleware.RoleMiddleware(model.RoleAdmin), a.PayrollHandler.ProcessPayroll)
+	a.Log.Info("mapped {/v1/payroll/process, POST} route")
 }

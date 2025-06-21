@@ -93,3 +93,35 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 		Ok: true,
 	})
 }
+
+func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
+	method := "PayrollHandler.ProcessPayroll"
+	h.Log.Trace("[BEGIN] - ", method)
+
+	auth := middleware.GetAuth(ctx)
+	request := new(model.ProcessPayrollRequest)
+	if err := ctx.BodyParser(request); err != nil {
+		return fiber.ErrBadRequest
+	}
+
+	errValidation := h.Validator.ValidateStruct(request)
+	if errValidation != nil {
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: errValidation,
+		})
+	}
+
+	err := h.UseCase.ProcessPayroll(ctx.UserContext(), request, auth)
+	if err != nil {
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: err.Error(),
+		})
+	}
+
+	h.Log.Trace("[END] - ", method)
+	return ctx.JSON(model.WebResponse[*model.CreatePayrollPeriodResponse]{
+		Ok: true,
+	})
+}
