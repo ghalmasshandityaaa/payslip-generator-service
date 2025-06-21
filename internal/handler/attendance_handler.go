@@ -1,28 +1,29 @@
 package handler
 
 import (
+	"context"
 	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
+	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 )
 
 type AttendanceHandler struct {
-	Log       *logrus.Logger
+	Log       *logger.ContextLogger
 	UseCase   *usecase.AttendanceUseCase
 	Validator *validator.Validator
 }
 
 func NewAttendanceHandler(
 	useCase *usecase.AttendanceUseCase,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	validator *validator.Validator,
 ) *AttendanceHandler {
 	return &AttendanceHandler{
-		Log:       logger,
+		Log:       log,
 		UseCase:   useCase,
 		Validator: validator,
 	}
@@ -39,12 +40,12 @@ func NewAttendanceHandler(
 // @Router /attendance [post]
 func (h *AttendanceHandler) Create(ctx *fiber.Ctx) error {
 	method := "AttendanceHandler.Create"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 	request := new(model.CreateAttendanceRequest)
 	if err := ctx.BodyParser(request); err != nil {
-		h.Log.Error("failed parse body: ", err.Error())
+		h.Log.WithContext(ctx).Error("failed parse body: ", err.Error())
 		return fiber.ErrBadRequest
 	}
 
@@ -56,7 +57,8 @@ func (h *AttendanceHandler) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	err := h.UseCase.Create(ctx.UserContext(), request, auth)
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	err := h.UseCase.Create(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -64,7 +66,7 @@ func (h *AttendanceHandler) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return ctx.JSON(model.WebResponse[*model.CreateAttendanceResponse]{
 		Ok: true,

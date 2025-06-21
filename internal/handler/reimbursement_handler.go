@@ -1,28 +1,29 @@
 package handler
 
 import (
+	"context"
 	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
+	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 )
 
 type ReimbursementHandler struct {
-	Log       *logrus.Logger
+	Log       *logger.ContextLogger
 	UseCase   *usecase.ReimbursementUseCase
 	Validator *validator.Validator
 }
 
 func NewReimbursementHandler(
 	useCase *usecase.ReimbursementUseCase,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	validator *validator.Validator,
 ) *ReimbursementHandler {
 	return &ReimbursementHandler{
-		Log:       logger,
+		Log:       log,
 		UseCase:   useCase,
 		Validator: validator,
 	}
@@ -39,7 +40,7 @@ func NewReimbursementHandler(
 // @Router /reimbursement [post]
 func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 	method := "ReimbursementHandler.Create"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 	request := new(model.CreateReimbursementRequest)
@@ -55,7 +56,9 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	err := h.UseCase.Create(ctx.UserContext(), request, auth)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	err := h.UseCase.Create(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -63,7 +66,7 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return ctx.JSON(model.WebResponse[*model.CreateReimbursementResponse]{
 		Ok: true,
 	})

@@ -1,17 +1,18 @@
 package handler
 
 import (
+	"context"
 	"payslip-generator-service/config"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
+	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 )
 
 type AuthHandler struct {
-	Log       *logrus.Logger
+	Log       *logger.ContextLogger
 	Config    *config.Config
 	UseCase   *usecase.AuthUseCase
 	Validator *validator.Validator
@@ -19,12 +20,12 @@ type AuthHandler struct {
 
 func NewAuthHandler(
 	useCase *usecase.AuthUseCase,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	config *config.Config,
 	validator *validator.Validator,
 ) *AuthHandler {
 	return &AuthHandler{
-		Log:       logger,
+		Log:       log,
 		UseCase:   useCase,
 		Config:    config,
 		Validator: validator,
@@ -41,7 +42,7 @@ func NewAuthHandler(
 // @Router /auth/sign-in [post]
 func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 	method := "AuthHandler.SignIn"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	request := new(model.SignInRequest)
 	if err := ctx.BodyParser(request); err != nil {
@@ -56,7 +57,9 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 		})
 	}
 
-	accessToken, refreshToken, err := h.UseCase.SignIn(ctx.UserContext(), request)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	accessToken, refreshToken, err := h.UseCase.SignIn(requestCtx, request)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -64,7 +67,7 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return ctx.JSON(model.WebResponse[*model.SignInResponse]{
 		Ok: true,

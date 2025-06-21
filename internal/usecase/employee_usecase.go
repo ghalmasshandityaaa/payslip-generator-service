@@ -7,52 +7,52 @@ import (
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/repository"
 	ulid "payslip-generator-service/pkg/database/gorm"
+	"payslip-generator-service/pkg/logger"
 
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type EmployeeUseCase struct {
 	DB                 *gorm.DB
-	Log                *logrus.Logger
+	Log                *logger.ContextLogger
 	EmployeeRepository *repository.EmployeeRepository
 }
 
 func NewEmployeeUseCase(
 	db *gorm.DB,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	employeeRepository *repository.EmployeeRepository,
 ) *EmployeeUseCase {
 	return &EmployeeUseCase{
 		DB:                 db,
-		Log:                logger,
+		Log:                log,
 		EmployeeRepository: employeeRepository,
 	}
 }
 
-func (a *EmployeeUseCase) GetById(ctx context.Context, employeeID ulid.ULID) (*entity.Employee, error) {
+func (a *EmployeeUseCase) GetById(ctx context.Context, id ulid.ULID) (*entity.Employee, error) {
 	method := "EmployeeUseCase.GetById"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, map[string]interface{}{"employeeID": employeeID})
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", id).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
 	employee := new(entity.Employee)
-	if err := a.EmployeeRepository.FindById(db, employee, employeeID); err != nil {
+	if err := a.EmployeeRepository.FindById(db, employee, id); err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, fmt.Errorf("employee/not-found")
 		}
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return employee, nil
 }
 
 func (a *EmployeeUseCase) List(ctx context.Context) ([]entity.Employee, error) {
 	method := "EmployeeUseCase.List"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -61,6 +61,6 @@ func (a *EmployeeUseCase) List(ctx context.Context) ([]entity.Employee, error) {
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return employees, nil
 }

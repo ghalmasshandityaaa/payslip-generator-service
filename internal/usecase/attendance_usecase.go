@@ -6,28 +6,28 @@ import (
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/repository"
+	"payslip-generator-service/pkg/logger"
 	"time"
 
 	ulid "payslip-generator-service/pkg/database/gorm"
 
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type AttendanceUseCase struct {
 	DB                   *gorm.DB
-	Log                  *logrus.Logger
+	Log                  *logger.ContextLogger
 	AttendanceRepository *repository.AttendanceRepository
 }
 
 func NewAttendanceUseCase(
 	db *gorm.DB,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	attendanceRepository *repository.AttendanceRepository,
 ) *AttendanceUseCase {
 	return &AttendanceUseCase{
 		DB:                   db,
-		Log:                  logger,
+		Log:                  log,
 		AttendanceRepository: attendanceRepository,
 	}
 }
@@ -38,8 +38,8 @@ func (a *AttendanceUseCase) Create(
 	auth *model.Auth,
 ) error {
 	method := "AttendanceUseCase.Create"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -69,7 +69,7 @@ func (a *AttendanceUseCase) Create(
 		return fmt.Errorf("attendance/must-today")
 	}
 
-	a.Log.Debug("attendance - ", method, attendance)
+	a.Log.WithContext(ctx).Debug("attendance - ", method, attendance)
 
 	todayAttendance, err := a.AttendanceRepository.FindByDate(db, attendance.StartTime)
 	if err != nil && err != gorm.ErrRecordNotFound {
@@ -84,7 +84,7 @@ func (a *AttendanceUseCase) Create(
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return nil
 }
@@ -96,8 +96,8 @@ func (a *AttendanceUseCase) ListByPeriod(
 	endDate time.Time,
 ) ([]entity.Attendance, error) {
 	method := "AttendanceUseCase.ListByPeriod"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, startDate, endDate)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", startDate).WithField("request", endDate).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -106,7 +106,7 @@ func (a *AttendanceUseCase) ListByPeriod(
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return attendances, nil
 }

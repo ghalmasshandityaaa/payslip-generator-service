@@ -1,31 +1,32 @@
 package handler
 
 import (
+	"context"
 	"math"
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
 	"payslip-generator-service/internal/vm"
+	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 )
 
 type PayrollHandler struct {
-	Log       *logrus.Logger
+	Log       *logger.ContextLogger
 	UseCase   *usecase.PayrollUseCase
 	Validator *validator.Validator
 }
 
 func NewPayrollHandler(
 	useCase *usecase.PayrollUseCase,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	validator *validator.Validator,
 ) *PayrollHandler {
 	return &PayrollHandler{
-		Log:       logger,
+		Log:       log,
 		UseCase:   useCase,
 		Validator: validator,
 	}
@@ -43,14 +44,16 @@ func NewPayrollHandler(
 // @Router /payroll/period [get]
 func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.ListPeriod"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	request := &model.ListPayrollPeriodRequest{
 		Page:     ctx.QueryInt("page", 1),
 		PageSize: ctx.QueryInt("size", 10),
 	}
 
-	data, total, err := h.UseCase.ListPeriod(ctx.UserContext(), request)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	data, total, err := h.UseCase.ListPeriod(requestCtx, request)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -65,7 +68,7 @@ func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 		TotalPage: int64(math.Ceil(float64(total) / float64(request.PageSize))),
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return ctx.JSON(model.WebResponseWithData[[]entity.PayrollPeriod]{
 		Ok:     true,
 		Data:   data,
@@ -84,7 +87,7 @@ func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 // @Router /payroll/period [post]
 func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.Create"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 	request := new(model.CreatePayrollPeriodRequest)
@@ -100,7 +103,9 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 		})
 	}
 
-	err := h.UseCase.CreatePeriod(ctx.UserContext(), request, auth)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	err := h.UseCase.CreatePeriod(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -108,7 +113,7 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return ctx.JSON(model.WebResponse[*model.CreatePayrollPeriodResponse]{
 		Ok: true,
 	})
@@ -125,7 +130,7 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 // @Router /payroll/process [post]
 func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.ProcessPayroll"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 	request := new(model.ProcessPayrollRequest)
@@ -141,7 +146,9 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 		})
 	}
 
-	err := h.UseCase.ProcessPayroll(ctx.UserContext(), request, auth)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	err := h.UseCase.ProcessPayroll(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -149,7 +156,7 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return ctx.JSON(model.WebResponse[*model.CreatePayrollPeriodResponse]{
 		Ok: true,
 	})
@@ -166,7 +173,7 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 // @Router /payroll/payslip [get]
 func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.GetPayslip"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 
@@ -182,7 +189,9 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 		})
 	}
 
-	data, err := h.UseCase.GetPayslip(ctx.UserContext(), request, auth)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	data, err := h.UseCase.GetPayslip(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -190,7 +199,7 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return ctx.JSON(model.WebResponse[*vm.Payslip]{
 		Ok:   true,
@@ -209,7 +218,7 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 // @Router /payroll/payslip/report [get]
 func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.GetPayslipReport"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 
@@ -225,7 +234,9 @@ func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 		})
 	}
 
-	data, err := h.UseCase.GetPayslipReport(ctx.UserContext(), request, auth)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	data, err := h.UseCase.GetPayslipReport(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -233,7 +244,7 @@ func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return ctx.JSON(model.WebResponse[*vm.PayslipReport]{
 		Ok:   true,

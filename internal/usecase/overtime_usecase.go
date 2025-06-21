@@ -6,30 +6,30 @@ import (
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/repository"
+	"payslip-generator-service/pkg/logger"
 	"time"
 
 	ulid "payslip-generator-service/pkg/database/gorm"
 
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type OvertimeUseCase struct {
 	DB                   *gorm.DB
-	Log                  *logrus.Logger
+	Log                  *logger.ContextLogger
 	OvertimeRepository   *repository.OvertimeRepository
 	AttendanceRepository *repository.AttendanceRepository
 }
 
 func NewOvertimeUseCase(
 	db *gorm.DB,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	overtimeRepository *repository.OvertimeRepository,
 	attendanceRepository *repository.AttendanceRepository,
 ) *OvertimeUseCase {
 	return &OvertimeUseCase{
 		DB:                   db,
-		Log:                  logger,
+		Log:                  log,
 		OvertimeRepository:   overtimeRepository,
 		AttendanceRepository: attendanceRepository,
 	}
@@ -41,8 +41,8 @@ func (a *OvertimeUseCase) Create(
 	auth *model.Auth,
 ) error {
 	method := "OvertimeUseCase.Create"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -84,10 +84,11 @@ func (a *OvertimeUseCase) Create(
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return nil
 }
+
 func (a *OvertimeUseCase) ListByPeriod(
 	ctx context.Context,
 	employeeID ulid.ULID,
@@ -95,8 +96,8 @@ func (a *OvertimeUseCase) ListByPeriod(
 	endDate time.Time,
 ) ([]entity.Overtime, error) {
 	method := "OvertimeUseCase.ListByPeriod"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, startDate, endDate)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", startDate).WithField("request", endDate).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -105,7 +106,7 @@ func (a *OvertimeUseCase) ListByPeriod(
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return overtimes, nil
 }

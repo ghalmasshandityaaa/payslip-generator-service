@@ -9,17 +9,17 @@ import (
 	"payslip-generator-service/internal/repository"
 	"payslip-generator-service/internal/vm"
 	ulid "payslip-generator-service/pkg/database/gorm"
+	"payslip-generator-service/pkg/logger"
 	"time"
 
 	v2 "github.com/oklog/ulid/v2"
-	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 	"gorm.io/gorm"
 )
 
 type PayrollUseCase struct {
 	DB                      *gorm.DB
-	Log                     *logrus.Logger
+	Log                     *logger.ContextLogger
 	payrollPeriodRepository *repository.PayrollPeriodRepository
 	attendanceUseCase       *AttendanceUseCase
 	overtimeUseCase         *OvertimeUseCase
@@ -29,7 +29,7 @@ type PayrollUseCase struct {
 
 func NewPayrollUseCase(
 	db *gorm.DB,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	payrollPeriodRepository *repository.PayrollPeriodRepository,
 	attendanceUseCase *AttendanceUseCase,
 	overtimeUseCase *OvertimeUseCase,
@@ -38,7 +38,7 @@ func NewPayrollUseCase(
 ) *PayrollUseCase {
 	return &PayrollUseCase{
 		DB:                      db,
-		Log:                     logger,
+		Log:                     log,
 		payrollPeriodRepository: payrollPeriodRepository,
 		attendanceUseCase:       attendanceUseCase,
 		overtimeUseCase:         overtimeUseCase,
@@ -49,8 +49,8 @@ func NewPayrollUseCase(
 
 func (a *PayrollUseCase) ListPeriod(ctx context.Context, request *model.ListPayrollPeriodRequest) ([]entity.PayrollPeriod, int64, error) {
 	method := "PayrollUseCase.ListPeriod"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 	data, total, err := a.payrollPeriodRepository.FindAllWithPagination(db, &model.PaginationOptions{
@@ -67,7 +67,7 @@ func (a *PayrollUseCase) ListPeriod(ctx context.Context, request *model.ListPayr
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return data, total, nil
 }
@@ -78,8 +78,8 @@ func (a *PayrollUseCase) CreatePeriod(
 	auth *model.Auth,
 ) error {
 	method := "PayrollUseCase.CreatePeriod"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -122,15 +122,15 @@ func (a *PayrollUseCase) CreatePeriod(
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return nil
 }
 
 func (a *PayrollUseCase) ProcessPayroll(ctx context.Context, request *model.ProcessPayrollRequest, auth *model.Auth) error {
 	method := "PayrollUseCase.ProcessPayroll"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -152,7 +152,7 @@ func (a *PayrollUseCase) ProcessPayroll(ctx context.Context, request *model.Proc
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return nil
 }
@@ -162,8 +162,8 @@ func (a *PayrollUseCase) generatePayslip(
 	params model.GeneratePayslipRequest,
 ) (*vm.Payslip, error) {
 	method := "PayrollUseCase.generatePayslip"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, params)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", params).Debug("request")
 
 	if params.Period.ProcessedAt == nil {
 		return nil, fmt.Errorf("payroll/period-not-processed")
@@ -180,7 +180,7 @@ func (a *PayrollUseCase) generatePayslip(
 	g.Go(func() (returnErr error) {
 		defer func() {
 			if r := recover(); r != nil {
-				a.Log.Error("Panic in attendance goroutine:", r)
+				a.Log.WithContext(ctx).Error("Panic in attendance goroutine:", r)
 				if err, ok := r.(error); ok {
 					returnErr = err
 				} else {
@@ -197,7 +197,7 @@ func (a *PayrollUseCase) generatePayslip(
 	g.Go(func() (returnErr error) {
 		defer func() {
 			if r := recover(); r != nil {
-				a.Log.Error("Panic in overtime goroutine:", r)
+				a.Log.WithContext(ctx).Error("Panic in overtime goroutine:", r)
 				if err, ok := r.(error); ok {
 					returnErr = err
 				} else {
@@ -214,7 +214,7 @@ func (a *PayrollUseCase) generatePayslip(
 	g.Go(func() (returnErr error) {
 		defer func() {
 			if r := recover(); r != nil {
-				a.Log.Error("Panic in reimbursement goroutine:", r)
+				a.Log.WithContext(ctx).Error("Panic in reimbursement goroutine:", r)
 				if err, ok := r.(error); ok {
 					returnErr = err
 				} else {
@@ -232,7 +232,7 @@ func (a *PayrollUseCase) generatePayslip(
 		panic(err)
 	}
 
-	a.Log.Info("Generate payslip for period: ", params.Period.StartDate, " to ", params.Period.EndDate)
+	a.Log.WithContext(ctx).Info("Generate payslip for period: ", params.Period.StartDate, " to ", params.Period.EndDate)
 
 	payslip := vm.NewPayslip(&vm.CreatePayslipProps{
 		EmployeeID:    params.EmployeeID,
@@ -243,14 +243,14 @@ func (a *PayrollUseCase) generatePayslip(
 		Salary:        params.Salary,
 	})
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 	return payslip, nil
 }
 
 func (a *PayrollUseCase) GetPayslip(ctx context.Context, request *model.GetPayslipRequest, auth *model.Auth) (*vm.Payslip, error) {
 	method := "PayrollUseCase.GetPayslip"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -281,15 +281,15 @@ func (a *PayrollUseCase) GetPayslip(ctx context.Context, request *model.GetPaysl
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return payslip, nil
 }
 
 func (a *PayrollUseCase) GetPayslipReport(ctx context.Context, request *model.GetPayslipRequest, auth *model.Auth) (*vm.PayslipReport, error) {
-	method := "PayrollUseCase.GetPayslip"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	method := "PayrollUseCase.GetPayslipReport"
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -318,7 +318,7 @@ func (a *PayrollUseCase) GetPayslipReport(ctx context.Context, request *model.Ge
 		g.Go(func() (returnErr error) {
 			defer func() {
 				if r := recover(); r != nil {
-					a.Log.Error("Panic in payslip goroutine:", r)
+					a.Log.WithContext(ctx).Error("Panic in payslip goroutine:", r)
 					if err, ok := r.(error); ok {
 						returnErr = err
 					} else {
@@ -346,6 +346,8 @@ func (a *PayrollUseCase) GetPayslipReport(ctx context.Context, request *model.Ge
 		Employees: employees,
 		Payslips:  payslips,
 	})
+
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return payslipReport, nil
 }

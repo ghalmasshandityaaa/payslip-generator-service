@@ -1,28 +1,29 @@
 package handler
 
 import (
+	"context"
 	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
+	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 )
 
 type OvertimeHandler struct {
-	Log       *logrus.Logger
+	Log       *logger.ContextLogger
 	UseCase   *usecase.OvertimeUseCase
 	Validator *validator.Validator
 }
 
 func NewOvertimeHandler(
 	useCase *usecase.OvertimeUseCase,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	validator *validator.Validator,
 ) *OvertimeHandler {
 	return &OvertimeHandler{
-		Log:       logger,
+		Log:       log,
 		UseCase:   useCase,
 		Validator: validator,
 	}
@@ -39,12 +40,12 @@ func NewOvertimeHandler(
 // @Router /overtime [post]
 func (h *OvertimeHandler) Create(ctx *fiber.Ctx) error {
 	method := "OvertimeHandler.Create"
-	h.Log.Trace("[BEGIN] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
 
 	auth := middleware.GetAuth(ctx)
 	request := new(model.CreateOvertimeRequest)
 	if err := ctx.BodyParser(request); err != nil {
-		h.Log.Error("failed parse body: ", err.Error())
+		h.Log.WithContext(ctx).Error("failed parse body: ", err.Error())
 		return fiber.ErrBadRequest
 	}
 
@@ -56,7 +57,9 @@ func (h *OvertimeHandler) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	err := h.UseCase.Create(ctx.UserContext(), request, auth)
+	// Create context with request_id
+	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	err := h.UseCase.Create(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
@@ -64,7 +67,7 @@ func (h *OvertimeHandler) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	h.Log.Trace("[END] - ", method)
+	h.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return ctx.JSON(model.WebResponse[*model.CreateOvertimeResponse]{
 		Ok: true,

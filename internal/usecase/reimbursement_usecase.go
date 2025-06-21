@@ -5,28 +5,28 @@ import (
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/repository"
+	"payslip-generator-service/pkg/logger"
 	"time"
 
 	ulid "payslip-generator-service/pkg/database/gorm"
 
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type ReimbursementUseCase struct {
 	DB                      *gorm.DB
-	Log                     *logrus.Logger
+	Log                     *logger.ContextLogger
 	ReimbursementRepository *repository.ReimbursementRepository
 }
 
 func NewReimbursementUseCase(
 	db *gorm.DB,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	reimbursementRepository *repository.ReimbursementRepository,
 ) *ReimbursementUseCase {
 	return &ReimbursementUseCase{
 		DB:                      db,
-		Log:                     logger,
+		Log:                     log,
 		ReimbursementRepository: reimbursementRepository,
 	}
 }
@@ -37,8 +37,8 @@ func (a *ReimbursementUseCase) Create(
 	auth *model.Auth,
 ) error {
 	method := "ReimbursementUseCase.Create"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -48,13 +48,13 @@ func (a *ReimbursementUseCase) Create(
 		CreatedBy:   auth.ID,
 	})
 
-	a.Log.Debug("reimbursement - ", method, reimbursement)
+	a.Log.WithContext(ctx).Debug("reimbursement - ", method, reimbursement)
 
 	if err := a.ReimbursementRepository.Create(db, reimbursement); err != nil {
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return nil
 }
@@ -66,8 +66,8 @@ func (a *ReimbursementUseCase) ListByPeriod(
 	endDate time.Time,
 ) ([]entity.Reimbursement, error) {
 	method := "ReimbursementUseCase.ListByPeriod"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, startDate, endDate)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", startDate).WithField("request", endDate).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -76,7 +76,7 @@ func (a *ReimbursementUseCase) ListByPeriod(
 		panic(err)
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return reimbursements, nil
 }

@@ -9,14 +9,14 @@ import (
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/repository"
 	"payslip-generator-service/internal/utils"
+	"payslip-generator-service/pkg/logger"
 
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type AuthUseCase struct {
 	DB                 *gorm.DB
-	Log                *logrus.Logger
+	Log                *logger.ContextLogger
 	Config             *config.Config
 	JwtUtil            *utils.JwtUtil
 	EmployeeRepository *repository.EmployeeRepository
@@ -24,14 +24,14 @@ type AuthUseCase struct {
 
 func NewAuthUseCase(
 	db *gorm.DB,
-	logger *logrus.Logger,
+	log *logger.ContextLogger,
 	config *config.Config,
 	jwtUtil *utils.JwtUtil,
 	employeeRepository *repository.EmployeeRepository,
 ) *AuthUseCase {
 	return &AuthUseCase{
 		DB:                 db,
-		Log:                logger,
+		Log:                log,
 		Config:             config,
 		JwtUtil:            jwtUtil,
 		EmployeeRepository: employeeRepository,
@@ -40,8 +40,8 @@ func NewAuthUseCase(
 
 func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) (string, string, error) {
 	method := "AuthUseCase.SignIn"
-	a.Log.Trace("[BEGIN] - ", method)
-	a.Log.Debug("request - ", method, request)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[BEGIN]")
+	a.Log.WithContext(ctx).WithField("method", method).WithField("request", request).Debug("request")
 
 	db := a.DB.WithContext(ctx)
 
@@ -55,11 +55,11 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 
 	match := utils.ComparePassword(request.Password, employee.Password)
 	if !match {
-		a.Log.Error("password mismatch")
+		a.Log.WithContext(ctx).Error("password mismatch")
 		return "", "", fmt.Errorf("auth/password-mismatch")
 	}
 
-	a.Log.Debug("Password match, generating tokens...")
+	a.Log.WithContext(ctx).Debug("Password match, generating tokens...")
 
 	// Use goroutines to generate access and refresh tokens in parallel
 	type tokenResult struct {
@@ -91,14 +91,14 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 		select {
 		case result := <-accessTokenChan:
 			if result.err != nil {
-				a.Log.WithError(result.err).Error("failed to generate access token")
+				a.Log.WithContext(ctx).WithError(result.err).Error("failed to generate access token")
 				accessErr = fmt.Errorf("internal/server-error")
 			} else {
 				accessToken = result.token
 			}
 		case result := <-refreshTokenChan:
 			if result.err != nil {
-				a.Log.WithError(result.err).Error("failed to generate refresh token")
+				a.Log.WithContext(ctx).WithError(result.err).Error("failed to generate refresh token")
 				refreshErr = fmt.Errorf("internal/server-error")
 			} else {
 				refreshToken = result.token
@@ -108,7 +108,7 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 		}
 	}
 
-	a.Log.Debug("Tokens generated successfully, checking for errors...")
+	a.Log.WithContext(ctx).Debug("Tokens generated successfully, checking for errors...")
 
 	// Check for error
 	if accessErr != nil {
@@ -118,7 +118,7 @@ func (a *AuthUseCase) SignIn(ctx context.Context, request *model.SignInRequest) 
 		return "", "", refreshErr
 	}
 
-	a.Log.Trace("[END] - ", method)
+	a.Log.WithContext(ctx).WithField("method", method).Trace("[END]")
 
 	return accessToken, refreshToken, nil
 }

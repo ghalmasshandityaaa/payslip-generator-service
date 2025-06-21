@@ -8,6 +8,7 @@ import (
 	"payslip-generator-service/internal/route"
 	"payslip-generator-service/internal/usecase"
 	"payslip-generator-service/internal/utils"
+	"payslip-generator-service/pkg/logger"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,6 +25,9 @@ type BootstrapConfig struct {
 }
 
 func Bootstrap(config *BootstrapConfig) {
+	// init context logger
+	contextLogger := logger.NewContextLogger(config.Log)
+
 	// init utils
 	jwtUtil := utils.NewJwtUtil(config.Config)
 
@@ -35,13 +39,13 @@ func Bootstrap(config *BootstrapConfig) {
 	payrollRepository := repository.NewPayrollPeriodRepository(config.Log)
 
 	// init use cases
-	authUseCase := usecase.NewAuthUseCase(config.DB, config.Log, config.Config, jwtUtil, userRepository)
-	employeeUseCase := usecase.NewEmployeeUseCase(config.DB, config.Log, userRepository)
-	reimbursementUseCase := usecase.NewReimbursementUseCase(config.DB, config.Log, reimbursementRepository)
-	attendanceUseCase := usecase.NewAttendanceUseCase(config.DB, config.Log, attendanceRepository)
-	overtimeUseCase := usecase.NewOvertimeUseCase(config.DB, config.Log, overtimeRepository, attendanceRepository)
+	authUseCase := usecase.NewAuthUseCase(config.DB, contextLogger, config.Config, jwtUtil, userRepository)
+	employeeUseCase := usecase.NewEmployeeUseCase(config.DB, contextLogger, userRepository)
+	reimbursementUseCase := usecase.NewReimbursementUseCase(config.DB, contextLogger, reimbursementRepository)
+	attendanceUseCase := usecase.NewAttendanceUseCase(config.DB, contextLogger, attendanceRepository)
+	overtimeUseCase := usecase.NewOvertimeUseCase(config.DB, contextLogger, overtimeRepository, attendanceRepository)
 	payrollUseCase := usecase.NewPayrollUseCase(
-		config.DB, config.Log,
+		config.DB, contextLogger,
 		payrollRepository,
 		attendanceUseCase,
 		overtimeUseCase,
@@ -50,11 +54,11 @@ func Bootstrap(config *BootstrapConfig) {
 	)
 
 	// init handlers
-	authHandler := handler.NewAuthHandler(authUseCase, config.Log, config.Config, config.Validator)
-	reimbursementHandler := handler.NewReimbursementHandler(reimbursementUseCase, config.Log, config.Validator)
-	attendanceHandler := handler.NewAttendanceHandler(attendanceUseCase, config.Log, config.Validator)
-	overtimeHandler := handler.NewOvertimeHandler(overtimeUseCase, config.Log, config.Validator)
-	payrollHandler := handler.NewPayrollHandler(payrollUseCase, config.Log, config.Validator)
+	authHandler := handler.NewAuthHandler(authUseCase, contextLogger, config.Config, config.Validator)
+	reimbursementHandler := handler.NewReimbursementHandler(reimbursementUseCase, contextLogger, config.Validator)
+	attendanceHandler := handler.NewAttendanceHandler(attendanceUseCase, contextLogger, config.Validator)
+	overtimeHandler := handler.NewOvertimeHandler(overtimeUseCase, contextLogger, config.Validator)
+	payrollHandler := handler.NewPayrollHandler(payrollUseCase, contextLogger, config.Validator)
 
 	// init middleware
 	authMiddleware := middleware.NewAuthMiddleware(employeeUseCase, jwtUtil)
