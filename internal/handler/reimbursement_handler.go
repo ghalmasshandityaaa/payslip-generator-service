@@ -40,7 +40,7 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: errValidation,
 		})
@@ -48,7 +48,7 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 
 	err := h.UseCase.Create(ctx.UserContext(), request, auth)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})

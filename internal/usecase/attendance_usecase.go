@@ -63,10 +63,10 @@ func (a *AttendanceUseCase) Create(
 		return fmt.Errorf("attendance/must-same-day")
 	} else if !attendance.IsWeekday() {
 		return fmt.Errorf("attendance/must-weekday")
-	} else if !attendance.IsToday() {
-		return fmt.Errorf("attendance/must-today")
 	} else if !attendance.IsEndTimeGreaterThanStartTime() {
 		return fmt.Errorf("attendance/invalid-time-order")
+	} else if !attendance.IsToday() {
+		return fmt.Errorf("attendance/must-today")
 	}
 
 	a.Log.Debug("attendance - ", method, attendance)

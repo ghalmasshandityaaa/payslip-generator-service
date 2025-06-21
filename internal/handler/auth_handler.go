@@ -42,7 +42,7 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[*model.SignInResponse]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[*model.SignInResponse]{
 			Ok:     false,
 			Errors: errValidation,
 		})
@@ -50,7 +50,7 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 
 	accessToken, refreshToken, err := h.UseCase.SignIn(ctx.UserContext(), request)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})

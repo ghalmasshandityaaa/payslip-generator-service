@@ -42,7 +42,7 @@ func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 
 	data, total, err := h.UseCase.ListPeriod(ctx.UserContext(), request)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})
@@ -75,7 +75,7 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: errValidation,
 		})
@@ -83,7 +83,7 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 
 	err := h.UseCase.CreatePeriod(ctx.UserContext(), request, auth)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})
@@ -107,7 +107,7 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: errValidation,
 		})
@@ -115,7 +115,7 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 
 	err := h.UseCase.ProcessPayroll(ctx.UserContext(), request, auth)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})
@@ -139,7 +139,7 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: errValidation,
 		})
@@ -147,7 +147,7 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 
 	data, err := h.UseCase.GetPayslip(ctx.UserContext(), request, auth)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})
@@ -173,7 +173,7 @@ func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 
 	errValidation := h.Validator.ValidateStruct(request)
 	if errValidation != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: errValidation,
 		})
@@ -181,7 +181,7 @@ func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 
 	data, err := h.UseCase.GetPayslipReport(ctx.UserContext(), request, auth)
 	if err != nil {
-		return ctx.JSON(model.WebResponse[any]{
+		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
 			Ok:     false,
 			Errors: err.Error(),
 		})
