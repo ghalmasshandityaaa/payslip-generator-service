@@ -3,7 +3,7 @@
         "Name": "Payslip Generator Service",
         "Version": "1.0.0",
         "Domain": "localhost",
-        "Host": "localhost",
+        "Host": "0.0.0.0",
         "Port": 3000,
         "Env": "Production",
         "Debug": true,
