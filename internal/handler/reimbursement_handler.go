@@ -28,6 +28,15 @@ func NewReimbursementHandler(
 	}
 }
 
+// Create creates a new reimbursement record for the authenticated employee
+// @Summary Create reimbursement record
+// @Description Create a new reimbursement record with amount and description for the authenticated employee
+// @Tags Reimbursement
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param request body model.CreateReimbursementRequest true "Reimbursement details"
+// @Router /reimbursement [post]
 func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 	method := "ReimbursementHandler.Create"
 	h.Log.Trace("[BEGIN] - ", method)

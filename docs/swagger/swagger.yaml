@@ -1,0 +1,329 @@
+basePath: /v1
+definitions:
+  model.CreateAttendanceRequest:
+    properties:
+      end_time:
+        description: |-
+          End time of work shift (YYYY-MM-DD HH:MM:SS format)
+          required: true
+          example: "2024-01-15 17:00:00"
+        type: string
+      start_time:
+        description: |-
+          Start time of work shift (YYYY-MM-DD HH:MM:SS format)
+          required: true
+          example: "2024-01-15 08:00:00"
+        type: string
+    required:
+    - end_time
+    - start_time
+    type: object
+  model.CreateOvertimeRequest:
+    properties:
+      date:
+        description: |-
+          Date of overtime work (YYYY-MM-DD format)
+          required: true
+          example: "2024-01-15"
+        type: string
+      total_hours:
+        description: |-
+          Total hours of overtime (1-3 hours maximum)
+          required: true
+          minimum: 1
+          maximum: 3
+          example: 2
+        maximum: 3
+        minimum: 1
+        type: integer
+    required:
+    - date
+    - total_hours
+    type: object
+  model.CreatePayrollPeriodRequest:
+    properties:
+      end_date:
+        description: |-
+          End date of the payroll period (YYYY-MM-DD format)
+          required: true
+          example: "2024-01-31"
+        type: string
+      start_date:
+        description: |-
+          Start date of the payroll period (YYYY-MM-DD format)
+          required: true
+          example: "2024-01-01"
+        type: string
+    required:
+    - end_date
+    - start_date
+    type: object
+  model.CreateReimbursementRequest:
+    properties:
+      amount:
+        description: |-
+          Reimbursement amount in currency units
+          required: true
+          minimum: 1
+          example: 150000
+        minimum: 1
+        type: integer
+      description:
+        description: |-
+          Description of the reimbursement expense
+          required: true
+          min: 5
+          max: 255
+          example: "Transportation expenses for client meeting"
+        maxLength: 255
+        minLength: 5
+        type: string
+    required:
+    - amount
+    - description
+    type: object
+  model.ProcessPayrollRequest:
+    properties:
+      period_id:
+        description: |-
+          Unique identifier of the payroll period
+          required: true
+          example: "01HXYZ123456789ABCDEFGHIJK"
+        type: string
+    required:
+    - period_id
+    type: object
+  model.SignInRequest:
+    properties:
+      password:
+        description: |-
+          Password for authentication (must be strong password)
+          required: true
+          example: "StrongP@ssw0rd123"
+        type: string
+      username:
+        description: |-
+          Username for authentication (4-100 characters)
+          required: true
+          min: 4
+          max: 100
+          example: "john.doe"
+        maxLength: 100
+        minLength: 4
+        type: string
+    required:
+    - password
+    - username
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: ghalmas.shanditya.putra.agung@gmail.com
+    name: Ghalmas Shanditya Putra Agung
+  description: A robust, scalable, and secure payroll management system API built
+    with Go. This API provides comprehensive functionality for managing employee payroll,
+    attendance tracking, overtime calculations, and reimbursement processing. Features
+    include JWT-based authentication, role-based access control, automated payroll
+    processing, and detailed payslip generation.
+  termsOfService: http://swagger.io/terms/
+  title: Payslip Generator Service API
+  version: "1.0"
+paths:
+  /attendance:
+    post:
+      consumes:
+      - application/json
+      description: Create a new attendance record with start and end times for the
+        authenticated employee
+      parameters:
+      - description: Attendance details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateAttendanceRequest'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Create attendance record
+      tags:
+      - Attendance
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with username and password to get access and
+        refresh tokens
+      parameters:
+      - description: Sign in credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.SignInRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Sign in user
+      tags:
+      - Authentication
+  /overtime:
+    post:
+      consumes:
+      - application/json
+      description: Create a new overtime record with date and total hours for the
+        authenticated employee
+      parameters:
+      - description: Overtime details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateOvertimeRequest'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Create overtime record
+      tags:
+      - Overtime
+  /payroll/payslip:
+    get:
+      consumes:
+      - application/json
+      description: Get payslip details for the authenticated employee in a specific
+        period (Employee only)
+      parameters:
+      - description: Payroll period ID
+        example: '"01HXYZ123456789ABCDEFGHIJK"'
+        in: query
+        name: period_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Get payslip
+      tags:
+      - Payroll
+  /payroll/payslip/report:
+    get:
+      consumes:
+      - application/json
+      description: Get comprehensive payslip report for all employees in a specific
+        period (Admin only)
+      parameters:
+      - description: Payroll period ID
+        example: '"01HXYZ123456789ABCDEFGHIJK"'
+        in: query
+        name: period_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Get payslip report
+      tags:
+      - Payroll
+  /payroll/period:
+    get:
+      consumes:
+      - application/json
+      description: Get a paginated list of all payroll periods in the system
+      parameters:
+      - description: 'Page number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - description: 'Page size (default: 10)'
+        in: query
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: List payroll periods
+      tags:
+      - Payroll
+    post:
+      consumes:
+      - application/json
+      description: Create a new payroll period with start and end dates (Admin only)
+      parameters:
+      - description: Payroll period details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreatePayrollPeriodRequest'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Create payroll period
+      tags:
+      - Payroll
+  /payroll/process:
+    post:
+      consumes:
+      - application/json
+      description: Process payroll calculations for all employees in a specific period
+        (Admin only)
+      parameters:
+      - description: Payroll processing details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.ProcessPayrollRequest'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Process payroll
+      tags:
+      - Payroll
+  /reimbursement:
+    post:
+      consumes:
+      - application/json
+      description: Create a new reimbursement record with amount and description for
+        the authenticated employee
+      parameters:
+      - description: Reimbursement details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateReimbursementRequest'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - bearer: []
+      summary: Create reimbursement record
+      tags:
+      - Reimbursement
+schemes:
+- http
+- https
+securityDefinitions:
+  bearer:
+    description: Enter the token with the `Bearer ` prefix, e.g. "Bearer abcde12345"
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

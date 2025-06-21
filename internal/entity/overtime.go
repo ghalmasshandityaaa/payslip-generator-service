@@ -8,25 +8,53 @@ import (
 	"github.com/oklog/ulid/v2"
 )
 
-// Overtime model
+// Overtime represents an employee's overtime record
+// swagger:model Overtime
 type Overtime struct {
-	ID         gorm.ULID  `json:"id" gorm:"column:id;type:ulid;primaryKey"`
-	Date       time.Time  `json:"date" gorm:"column:date;type:date;not null"`
-	TotalHours int        `json:"total_hours" gorm:"column:total_hours;type:integer;not null"`
-	CreatedAt  time.Time  `json:"created_at" gorm:"column:created_at;type:timestamp with time zone;not null;default:CURRENT_TIMESTAMP"`
-	CreatedBy  gorm.ULID  `json:"created_by" gorm:"column:created_by;type:ulid;not null"`
-	UpdatedAt  *time.Time `json:"updated_at" gorm:"column:updated_at;type:timestamp with time zone"`
-	UpdatedBy  *gorm.ULID `json:"updated_by" gorm:"column:updated_by;type:ulid"`
+	// Unique identifier for the overtime record
+	// example: "01HXYZ123456789ABCDEFGHIJK"
+	ID gorm.ULID `json:"id" gorm:"column:id;type:ulid;primaryKey"`
+
+	// Date of the overtime work
+	// example: "2024-01-15T00:00:00Z"
+	Date time.Time `json:"date" gorm:"column:date;type:date;not null"`
+
+	// Total hours of overtime (1-3 hours maximum)
+	// example: 2
+	TotalHours int `json:"total_hours" gorm:"column:total_hours;type:integer;not null"`
+
+	// Timestamp when the overtime record was created
+	// example: "2024-01-15T08:00:00Z"
+	CreatedAt time.Time `json:"created_at" gorm:"column:created_at;type:timestamp with time zone;not null;default:CURRENT_TIMESTAMP"`
+
+	// ID of the employee who created the overtime record
+	// example: "01HXYZ123456789ABCDEFGHIJK"
+	CreatedBy gorm.ULID `json:"created_by" gorm:"column:created_by;type:ulid;not null"`
+
+	// Timestamp when the overtime record was last updated
+	// example: "2024-01-15T08:00:00Z"
+	UpdatedAt *time.Time `json:"updated_at" gorm:"column:updated_at;type:timestamp with time zone"`
+
+	// ID of the employee who last updated the overtime record
+	// example: "01HXYZ123456789ABCDEFGHIJK"
+	UpdatedBy *gorm.ULID `json:"updated_by" gorm:"column:updated_by;type:ulid"`
 
 	// Relations
+	// Employee who created the overtime record
 	Creator *Employee `json:"creator,omitempty" gorm:"foreignKey:CreatedBy"`
+	// Employee who last updated the overtime record
 	Updater *Employee `json:"updater,omitempty" gorm:"foreignKey:UpdatedBy"`
 }
 
+// CreateOvertimeProps represents the properties needed to create a new overtime record
+// swagger:model CreateOvertimeProps
 type CreateOvertimeProps struct {
-	Date       time.Time
+	// Date of the overtime work
+	Date time.Time
+	// Total hours of overtime
 	TotalHours int
-	CreatedBy  gorm.ULID
+	// ID of the employee creating the overtime record
+	CreatedBy gorm.ULID
 }
 
 func NewOvertime(props *CreateOvertimeProps) *Overtime {

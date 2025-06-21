@@ -46,6 +46,8 @@ help:
 	@echo "[8] run-dev                               	Run the server in development mode(hot reload)"
 	@echo "[9] run                                   	Run the server in production mode"
 	@echo "[10] clean                                 	Clean built binaries"
+	@echo "[11] swagger-gen                           	Generate Swagger documentation"
+	@echo "[12] swagger-serve                         	Serve Swagger documentation locally"
 
 migrate-create:
 ifdef name
@@ -93,4 +95,15 @@ clean:
 # Force rebuild
 rebuild: clean build
 
-.PHONY: help migrate-create migrate-up migrate-down migrate-clean migrate-status build run-dev run clean rebuild
+# Generate Swagger documentation
+swagger-gen:
+	@echo "Generating Swagger documentation..."
+	swag init -g cmd/main.go -o docs/swagger
+	@echo "Swagger documentation generated in docs/"
+
+# Serve Swagger documentation locally
+swagger-serve:
+	@echo "Serving Swagger documentation at http://localhost:8080/swagger/"
+	@echo "Make sure the server is running first with 'make run-dev' or 'make run'"
+
+.PHONY: help migrate-create migrate-up migrate-down migrate-clean migrate-status build run-dev run clean rebuild swagger-gen swagger-serve

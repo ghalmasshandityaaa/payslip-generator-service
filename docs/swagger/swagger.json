@@ -1,0 +1,419 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "A robust, scalable, and secure payroll management system API built with Go. This API provides comprehensive functionality for managing employee payroll, attendance tracking, overtime calculations, and reimbursement processing. Features include JWT-based authentication, role-based access control, automated payroll processing, and detailed payslip generation.",
+        "title": "Payslip Generator Service API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Ghalmas Shanditya Putra Agung",
+            "email": "ghalmas.shanditya.putra.agung@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/v1",
+    "paths": {
+        "/attendance": {
+            "post": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Create a new attendance record with start and end times for the authenticated employee",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Create attendance record",
+                "parameters": [
+                    {
+                        "description": "Attendance details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAttendanceRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/auth/sign-in": {
+            "post": {
+                "description": "Authenticate user with username and password to get access and refresh tokens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Sign in user",
+                "parameters": [
+                    {
+                        "description": "Sign in credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SignInRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/overtime": {
+            "post": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Create a new overtime record with date and total hours for the authenticated employee",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Overtime"
+                ],
+                "summary": "Create overtime record",
+                "parameters": [
+                    {
+                        "description": "Overtime details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateOvertimeRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/payroll/payslip": {
+            "get": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Get payslip details for the authenticated employee in a specific period (Employee only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payroll"
+                ],
+                "summary": "Get payslip",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"01HXYZ123456789ABCDEFGHIJK\"",
+                        "description": "Payroll period ID",
+                        "name": "period_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/payroll/payslip/report": {
+            "get": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Get comprehensive payslip report for all employees in a specific period (Admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payroll"
+                ],
+                "summary": "Get payslip report",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "\"01HXYZ123456789ABCDEFGHIJK\"",
+                        "description": "Payroll period ID",
+                        "name": "period_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/payroll/period": {
+            "get": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Get a paginated list of all payroll periods in the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payroll"
+                ],
+                "summary": "List payroll periods",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Page number (default: 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Page size (default: 10)",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Create a new payroll period with start and end dates (Admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payroll"
+                ],
+                "summary": "Create payroll period",
+                "parameters": [
+                    {
+                        "description": "Payroll period details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreatePayrollPeriodRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/payroll/process": {
+            "post": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Process payroll calculations for all employees in a specific period (Admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payroll"
+                ],
+                "summary": "Process payroll",
+                "parameters": [
+                    {
+                        "description": "Payroll processing details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProcessPayrollRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/reimbursement": {
+            "post": {
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "description": "Create a new reimbursement record with amount and description for the authenticated employee",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reimbursement"
+                ],
+                "summary": "Create reimbursement record",
+                "parameters": [
+                    {
+                        "description": "Reimbursement details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateReimbursementRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "model.CreateAttendanceRequest": {
+            "type": "object",
+            "required": [
+                "end_time",
+                "start_time"
+            ],
+            "properties": {
+                "end_time": {
+                    "description": "End time of work shift (YYYY-MM-DD HH:MM:SS format)\nrequired: true\nexample: \"2024-01-15 17:00:00\"",
+                    "type": "string"
+                },
+                "start_time": {
+                    "description": "Start time of work shift (YYYY-MM-DD HH:MM:SS format)\nrequired: true\nexample: \"2024-01-15 08:00:00\"",
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateOvertimeRequest": {
+            "type": "object",
+            "required": [
+                "date",
+                "total_hours"
+            ],
+            "properties": {
+                "date": {
+                    "description": "Date of overtime work (YYYY-MM-DD format)\nrequired: true\nexample: \"2024-01-15\"",
+                    "type": "string"
+                },
+                "total_hours": {
+                    "description": "Total hours of overtime (1-3 hours maximum)\nrequired: true\nminimum: 1\nmaximum: 3\nexample: 2",
+                    "type": "integer",
+                    "maximum": 3,
+                    "minimum": 1
+                }
+            }
+        },
+        "model.CreatePayrollPeriodRequest": {
+            "type": "object",
+            "required": [
+                "end_date",
+                "start_date"
+            ],
+            "properties": {
+                "end_date": {
+                    "description": "End date of the payroll period (YYYY-MM-DD format)\nrequired: true\nexample: \"2024-01-31\"",
+                    "type": "string"
+                },
+                "start_date": {
+                    "description": "Start date of the payroll period (YYYY-MM-DD format)\nrequired: true\nexample: \"2024-01-01\"",
+                    "type": "string"
+                }
+            }
+        },
+        "model.CreateReimbursementRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "description"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "Reimbursement amount in currency units\nrequired: true\nminimum: 1\nexample: 150000",
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "description": {
+                    "description": "Description of the reimbursement expense\nrequired: true\nmin: 5\nmax: 255\nexample: \"Transportation expenses for client meeting\"",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 5
+                }
+            }
+        },
+        "model.ProcessPayrollRequest": {
+            "type": "object",
+            "required": [
+                "period_id"
+            ],
+            "properties": {
+                "period_id": {
+                    "description": "Unique identifier of the payroll period\nrequired: true\nexample: \"01HXYZ123456789ABCDEFGHIJK\"",
+                    "type": "string"
+                }
+            }
+        },
+        "model.SignInRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "description": "Password for authentication (must be strong password)\nrequired: true\nexample: \"StrongP@ssw0rd123\"",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Username for authentication (4-100 characters)\nrequired: true\nmin: 4\nmax: 100\nexample: \"john.doe\"",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 4
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "bearer": {
+            "description": "Enter the token with the `Bearer ` prefix, e.g. \"Bearer abcde12345\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

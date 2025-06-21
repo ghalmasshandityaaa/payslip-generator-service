@@ -5,37 +5,84 @@ import (
 	ulid "payslip-generator-service/pkg/database/gorm"
 )
 
+// reimbursementProps represents reimbursement summary data
+// swagger:model reimbursementProps
 type reimbursementProps struct {
-	TotalItem      int                    `json:"total_item"`
-	TotalAmount    int                    `json:"total_amount"`
+	// Total number of reimbursement items
+	// example: 3
+	TotalItem int `json:"total_item"`
+
+	// Total amount of all reimbursements
+	// example: 450000
+	TotalAmount int `json:"total_amount"`
+
+	// List of reimbursement records
 	Reimbursements []entity.Reimbursement `json:"reimbursements"`
 }
 
+// overtimeProps represents overtime summary data
+// swagger:model overtimeProps
 type overtimeProps struct {
-	TotalItem   int               `json:"total_item"`
-	TotalAmount int               `json:"total_amount"`
-	TotalHours  int               `json:"total_hours"`
-	Overtimes   []entity.Overtime `json:"overtimes"`
+	// Total number of overtime records
+	// example: 5
+	TotalItem int `json:"total_item"`
+
+	// Total overtime pay amount
+	// example: 250000
+	TotalAmount int `json:"total_amount"`
+
+	// Total overtime hours worked
+	// example: 10
+	TotalHours int `json:"total_hours"`
+
+	// List of overtime records
+	Overtimes []entity.Overtime `json:"overtimes"`
 }
 
-// Payslip model
+// Payslip represents a comprehensive payslip for an employee
+// swagger:model Payslip
 type Payslip struct {
-	EmployeeID    ulid.ULID           `json:"employee_id"`
-	Attendances   []entity.Attendance `json:"attendances"`
-	Overtime      overtimeProps       `json:"overtime"`
-	Reimbursement reimbursementProps  `json:"reimbursement"`
-	BasicSalary   int                 `json:"basic_salary"`
-	Salary        int                 `json:"salary"`
-	TakeHomePay   int                 `json:"take_home_pay"`
+	// Unique identifier of the employee
+	// example: "01HXYZ123456789ABCDEFGHIJK"
+	EmployeeID ulid.ULID `json:"employee_id"`
+
+	// List of attendance records for the period
+	Attendances []entity.Attendance `json:"attendances"`
+
+	// Overtime summary and details
+	Overtime overtimeProps `json:"overtime"`
+
+	// Reimbursement summary and details
+	Reimbursement reimbursementProps `json:"reimbursement"`
+
+	// Employee's base salary amount
+	// example: 5000000
+	BasicSalary int `json:"basic_salary"`
+
+	// Calculated salary for the period based on attendance
+	// example: 4500000
+	Salary int `json:"salary"`
+
+	// Final take-home pay after deductions and additions
+	// example: 4700000
+	TakeHomePay int `json:"take_home_pay"`
 }
 
+// CreatePayslipProps represents the properties needed to create a new payslip
+// swagger:model CreatePayslipProps
 type CreatePayslipProps struct {
-	EmployeeID    ulid.ULID
-	Attendance    []entity.Attendance
-	Overtime      []entity.Overtime
+	// Unique identifier of the employee
+	EmployeeID ulid.ULID
+	// List of attendance records
+	Attendance []entity.Attendance
+	// List of overtime records
+	Overtime []entity.Overtime
+	// List of reimbursement records
 	Reimbursement []entity.Reimbursement
+	// Payroll period information
 	PayrollPeriod entity.PayrollPeriod
-	Salary        int
+	// Employee's base salary
+	Salary int
 }
 
 func NewPayslip(props *CreatePayslipProps) *Payslip {

@@ -31,6 +31,14 @@ func NewAuthHandler(
 	}
 }
 
+// SignIn authenticates a user and returns access and refresh tokens
+// @Summary Sign in user
+// @Description Authenticate user with username and password to get access and refresh tokens
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body model.SignInRequest true "Sign in credentials"
+// @Router /auth/sign-in [post]
 func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 	method := "AuthHandler.SignIn"
 	h.Log.Trace("[BEGIN] - ", method)

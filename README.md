@@ -152,6 +152,35 @@ payslip-generator-service/
 
 ## 🔌 API Documentation
 
+### Interactive API Documentation (Swagger)
+
+The API provides comprehensive interactive documentation using Swagger/OpenAPI 3.0:
+
+**Access Swagger UI:**
+```
+http://localhost:8080/swagger/
+```
+
+**Features:**
+- 🔍 **Interactive Testing** - Test all endpoints directly from the browser
+- 📖 **Complete Documentation** - Detailed request/response schemas
+- 🔐 **Authentication Support** - Built-in JWT token management
+- 📝 **Request Examples** - Pre-filled sample requests for all endpoints
+- ✅ **Validation** - Real-time request validation and error messages
+
+**Setup:**
+```bash
+# Generate Swagger documentation
+make swagger-gen
+
+# Start the server
+make run-dev
+
+# Access documentation at http://localhost:8080/swagger/
+```
+
+For detailed Swagger setup instructions, see [Swagger Setup Guide](./docs/SWAGGER_SETUP.md).
+
 ### Base URL
 ```http
 http://localhost:3000/v1
@@ -247,6 +276,10 @@ make run-dev                               # Run with hot reload
 make run                                   # Run in production mode
 make clean                                 # Clean build artifacts
 make rebuild                               # Force rebuild
+
+# Swagger documentation
+make swagger-gen                           # Generate Swagger documentation
+make swagger-serve                         # Serve Swagger UI (requires server running)
 
 # Help
 make help                                  # Show all available commands

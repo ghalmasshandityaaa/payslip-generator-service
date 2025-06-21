@@ -31,6 +31,16 @@ func NewPayrollHandler(
 	}
 }
 
+// ListPeriod retrieves a paginated list of payroll periods
+// @Summary List payroll periods
+// @Description Get a paginated list of all payroll periods in the system
+// @Tags Payroll
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param page query int false "Page number (default: 1)" minimum(1)
+// @Param size query int false "Page size (default: 10)" minimum(1)
+// @Router /payroll/period [get]
 func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.ListPeriod"
 	h.Log.Trace("[BEGIN] - ", method)
@@ -63,6 +73,15 @@ func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 	})
 }
 
+// CreatePeriod creates a new payroll period
+// @Summary Create payroll period
+// @Description Create a new payroll period with start and end dates (Admin only)
+// @Tags Payroll
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param request body model.CreatePayrollPeriodRequest true "Payroll period details"
+// @Router /payroll/period [post]
 func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.Create"
 	h.Log.Trace("[BEGIN] - ", method)
@@ -95,6 +114,15 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 	})
 }
 
+// ProcessPayroll processes payroll for a specific period
+// @Summary Process payroll
+// @Description Process payroll calculations for all employees in a specific period (Admin only)
+// @Tags Payroll
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param request body model.ProcessPayrollRequest true "Payroll processing details"
+// @Router /payroll/process [post]
 func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.ProcessPayroll"
 	h.Log.Trace("[BEGIN] - ", method)
@@ -127,6 +155,15 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 	})
 }
 
+// GetPayslip retrieves payslip for the authenticated employee
+// @Summary Get payslip
+// @Description Get payslip details for the authenticated employee in a specific period (Employee only)
+// @Tags Payroll
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param period_id query string true "Payroll period ID" example("01HXYZ123456789ABCDEFGHIJK")
+// @Router /payroll/payslip [get]
 func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.GetPayslip"
 	h.Log.Trace("[BEGIN] - ", method)
@@ -161,6 +198,15 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 	})
 }
 
+// GetPayslipReport retrieves payslip report for all employees
+// @Summary Get payslip report
+// @Description Get comprehensive payslip report for all employees in a specific period (Admin only)
+// @Tags Payroll
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param period_id query string true "Payroll period ID" example("01HXYZ123456789ABCDEFGHIJK")
+// @Router /payroll/payslip/report [get]
 func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 	method := "PayrollHandler.GetPayslipReport"
 	h.Log.Trace("[BEGIN] - ", method)

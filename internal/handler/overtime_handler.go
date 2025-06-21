@@ -28,6 +28,15 @@ func NewOvertimeHandler(
 	}
 }
 
+// Create creates a new overtime record for the authenticated employee
+// @Summary Create overtime record
+// @Description Create a new overtime record with date and total hours for the authenticated employee
+// @Tags Overtime
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param request body model.CreateOvertimeRequest true "Overtime details"
+// @Router /overtime [post]
 func (h *OvertimeHandler) Create(ctx *fiber.Ctx) error {
 	method := "OvertimeHandler.Create"
 	h.Log.Trace("[BEGIN] - ", method)

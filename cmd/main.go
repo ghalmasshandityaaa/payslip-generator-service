@@ -15,12 +15,27 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	_ "payslip-generator-service/docs/swagger"
 )
 
 func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
+// @title Payslip Generator Service API
+// @version 1.0
+// @description A robust, scalable, and secure payroll management system API built with Go. This API provides comprehensive functionality for managing employee payroll, attendance tracking, overtime calculations, and reimbursement processing. Features include JWT-based authentication, role-based access control, automated payroll processing, and detailed payslip generation.
+// @termsOfService http://swagger.io/terms/
+// @contact.name Ghalmas Shanditya Putra Agung
+// @contact.email ghalmas.shanditya.putra.agung@gmail.com
+// @host localhost:3000
+// @BasePath /v1
+// @schemes http https
+// @securityDefinitions.apikey bearer
+// @in header
+// @name Authorization
+// @description Enter the token with the `Bearer ` prefix, e.g. "Bearer abcde12345"
 func main() {
 	conf := config.Read()
 

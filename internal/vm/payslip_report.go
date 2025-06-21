@@ -5,25 +5,56 @@ import (
 	ulid "payslip-generator-service/pkg/database/gorm"
 )
 
+// PayslipReportEmployee represents employee data in a payslip report
+// swagger:model PayslipReportEmployee
 type PayslipReportEmployee struct {
-	EmployeeID       ulid.ULID `json:"id"`
-	EmployeeUsername string    `json:"username"`
-	BasicSalary      int       `json:"basic_salary"`
-	Salary           int       `json:"salary"`
-	TakeHomePay      int       `json:"take_home_pay"`
+	// Unique identifier of the employee
+	// example: "01HXYZ123456789ABCDEFGHIJK"
+	EmployeeID ulid.ULID `json:"id"`
+
+	// Username of the employee
+	// example: "john.doe"
+	EmployeeUsername string `json:"username"`
+
+	// Employee's base salary amount
+	// example: 5000000
+	BasicSalary int `json:"basic_salary"`
+
+	// Calculated salary for the period
+	// example: 4500000
+	Salary int `json:"salary"`
+
+	// Final take-home pay for the employee
+	// example: 4700000
+	TakeHomePay int `json:"take_home_pay"`
 }
 
-// PayslipReport model
+// PayslipReport represents a comprehensive report of all employee payslips
+// swagger:model PayslipReport
 type PayslipReport struct {
-	Employees        []PayslipReportEmployee `json:"employees"`
-	TotalBasicSalary int                     `json:"total_basic_salary"`
-	TotalSalary      int                     `json:"total_salary"`
-	TotalTakeHomePay int                     `json:"total_take_home_pay"`
+	// List of employee payslip data
+	Employees []PayslipReportEmployee `json:"employees"`
+
+	// Total basic salary for all employees
+	// example: 15000000
+	TotalBasicSalary int `json:"total_basic_salary"`
+
+	// Total calculated salary for all employees
+	// example: 13500000
+	TotalSalary int `json:"total_salary"`
+
+	// Total take-home pay for all employees
+	// example: 14100000
+	TotalTakeHomePay int `json:"total_take_home_pay"`
 }
 
+// CreatePayslipReportProps represents the properties needed to create a new payslip report
+// swagger:model CreatePayslipReportProps
 type CreatePayslipReportProps struct {
+	// List of all employees
 	Employees []entity.Employee
-	Payslips  []Payslip
+	// List of all payslips
+	Payslips []Payslip
 }
 
 func NewPayslipReport(props *CreatePayslipReportProps) *PayslipReport {

@@ -28,6 +28,15 @@ func NewAttendanceHandler(
 	}
 }
 
+// Create creates a new attendance record for the authenticated employee
+// @Summary Create attendance record
+// @Description Create a new attendance record with start and end times for the authenticated employee
+// @Tags Attendance
+// @Accept json
+// @Produce json
+// @Security bearer
+// @Param request body model.CreateAttendanceRequest true "Attendance details"
+// @Router /attendance [post]
 func (h *AttendanceHandler) Create(ctx *fiber.Ctx) error {
 	method := "AttendanceHandler.Create"
 	h.Log.Trace("[BEGIN] - ", method)

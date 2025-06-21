@@ -48,4 +48,5 @@ func (a *Route) Setup() {
 	a.SetupAttendanceRoute()
 	a.SetupOvertimeRoute()
 	a.SetupPayrollRoute()
+	a.SetupSwaggerRoute()
 }
