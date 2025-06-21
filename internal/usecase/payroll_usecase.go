@@ -165,6 +165,10 @@ func (a *PayrollUseCase) generatePayslip(
 	a.Log.Trace("[BEGIN] - ", method)
 	a.Log.Debug("request - ", method, params)
 
+	if params.Period.ProcessedAt == nil {
+		return nil, fmt.Errorf("payroll/period-not-processed")
+	}
+
 	var (
 		attendance    []entity.Attendance
 		overtime      []entity.Overtime
@@ -220,7 +224,7 @@ func (a *PayrollUseCase) generatePayslip(
 		}()
 
 		var err error
-		reimbursement, err = a.reimbursementUseCase.ListByPeriod(ctx, params.EmployeeID, params.Period.StartDate, params.Period.EndDate)
+		reimbursement, err = a.reimbursementUseCase.ListByPeriod(ctx, params.EmployeeID, params.Period.StartDate, *params.Period.ProcessedAt)
 		return err
 	})
 
@@ -271,8 +275,6 @@ func (a *PayrollUseCase) GetPayslip(ctx context.Context, request *model.GetPaysl
 	payslip, err := a.generatePayslip(ctx, model.GeneratePayslipRequest{
 		EmployeeID: employee.ID,
 		Salary:     employee.Salary,
-		StartDate:  payrollPeriod.StartDate,
-		EndDate:    payrollPeriod.EndDate,
 		Period:     *payrollPeriod,
 	})
 	if err != nil {
@@ -329,8 +331,6 @@ func (a *PayrollUseCase) GetPayslipReport(ctx context.Context, request *model.Ge
 			payslip, err := a.generatePayslip(ctx, model.GeneratePayslipRequest{
 				EmployeeID: employee.ID,
 				Salary:     employee.Salary,
-				StartDate:  payrollPeriod.StartDate,
-				EndDate:    payrollPeriod.EndDate,
 				Period:     *payrollPeriod,
 			})
 			payslips = append(payslips, *payslip)

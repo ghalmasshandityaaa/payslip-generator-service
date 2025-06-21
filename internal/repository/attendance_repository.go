@@ -34,7 +34,6 @@ func (a *AttendanceRepository) FindByPeriod(db *gorm.DB, employeeID ulid.ULID, s
 	err := db.Debug().
 		Where("DATE(start_time) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
 		Where("DATE(end_time) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
-		Where("DATE(created_at) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
 		Where("created_by = ?", employeeID).
 		Find(&attendances).Error
 

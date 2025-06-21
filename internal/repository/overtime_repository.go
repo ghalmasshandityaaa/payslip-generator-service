@@ -32,8 +32,7 @@ func (a *OvertimeRepository) FindByPeriod(db *gorm.DB, employeeID ulid.ULID, sta
 	var overtimes []entity.Overtime
 
 	err := db.Debug().
-		Where("DATE(date) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
-		Where("DATE(created_at) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Where("date BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
 		Where("created_by = ?", employeeID).
 		Find(&overtimes).Error
 
