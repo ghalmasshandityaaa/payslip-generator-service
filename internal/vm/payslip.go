@@ -62,7 +62,7 @@ func NewPayslip(props *CreatePayslipProps) *Payslip {
 	for _, o := range props.Overtime {
 		if o.CreatedAt.Before(*maxSubmittedAt) {
 			overtimes = append(overtimes, o)
-			totalAmountOvertime += o.TotalHours * salaryPerHour
+			totalAmountOvertime += o.TotalHours * (salaryPerHour * 2) // 2x salary per hour
 			totalHoursOvertime += o.TotalHours
 		}
 	}
