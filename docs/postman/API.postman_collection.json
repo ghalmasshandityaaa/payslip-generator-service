@@ -1,0 +1,4883 @@
+{
+	"info": {
+		"_postman_id": "8325025c-46b3-4132-8c22-cb8c855bb57a",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31931072",
+		"_collection_link": "https://www.postman.com/planetary-meadow-507576/workspace/payslip-generator-service/collection/31931072-8325025c-46b3-4132-8c22-cb8c855bb57a?action=share&source=collection_link&creator=31931072"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    if (pm.response.status === \"OK\") {\r",
+									"        const body = pm.response.json();\r",
+									"        pm.environment.set(\"token\", body.data.access_token);\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/{{version}}/auth/sign-in",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:BAD_REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/auth/sign-in",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:00:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "143"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY95RSK54BRXGDEZ5752RPEV"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"field\": \"username\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        },\n        {\n            \"field\": \"password\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400:PASSWORD_MISSMATCH",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin_user\",\r\n    \"password\": \"Password123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/auth/sign-in",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:00:30 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY95S56F2R9RHJ0BD6TKZX3Z"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "48"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/password-mismatch\"\n}"
+						},
+						{
+							"name": "400:EMPLOYEE_NOT_FOUND",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"Password123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/auth/sign-in",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:00:45 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY95SM82DBWHEZJJDZJY39VW"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "33"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"employee/not-found\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin_user\",\r\n    \"password\": \"Password123!@#\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/auth/sign-in",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:01:04 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "Content-Length",
+									"value": "325"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin,Accept-Encoding"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY95T6VF232FRM3RNH5PN3JC"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "96"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "14"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"access_token\": \"{{vault:json-web-token}}\",\n        \"refresh_token\": \"{{vault:json-web-token}}\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reimbursement",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 10000,\r\n    \"description\": \"Reimbursement for travel expenses\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/{{version}}/reimbursement",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"reimbursement"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:BAD_REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/reimbursement",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"reimbursement"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:03:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "143"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY95YK1AQXG1K7Y5ESFAEQPX"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "50"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"field\": \"amount\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": 0\n        },\n        {\n            \"field\": \"description\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400:FORBIDDEN",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 10000,\r\n    \"description\": \"Reimbursement for travel expenses\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/reimbursement",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"reimbursement"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:06:55 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY964WVJ47EYRMCR550HREJY"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/forbidden-access\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 10000,\r\n    \"description\": \"Reimbursement for travel expenses\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/reimbursement",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"reimbursement"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:04:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY9607VMVXA96ASF4Z2NSJ1G"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "56"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Overtime",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2025-06-17\",\r\n    \"total_hours\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/{{version}}/overtime",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"overtime"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:FORBIDDEN",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/overtime",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"overtime"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:05:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY962Q7414CRXZ781WF216X4"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/forbidden-access\"\n}"
+						},
+						{
+							"name": "400:BAD_REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/overtime",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"overtime"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:07:24 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "141"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY965T0SZQCHZ1F2PYTWJN75"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "30"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"field\": \"date\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        },\n        {\n            \"field\": \"total_hours\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": 0\n        }\n    ]\n}"
+						},
+						{
+							"name": "400:ATTENDANCE_NOT_FOUND",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2025-01-01\",\r\n    \"total_hours\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/overtime",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"overtime"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:07:57 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "44"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY966T5YN9QKZ12H8N8NJVJG"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "57"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"attendance/not-found\"\n}"
+						},
+						{
+							"name": "400:MUST_TODAY",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2025-06-17\",\r\n    \"total_hours\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/overtime",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"overtime"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:15:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96M4S2YRDRMZP4FHPHZ6NS"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"overtime/must-today\"\n}"
+						},
+						{
+							"name": "400:ALREADY_EXISTS",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2025-06-17\",\r\n    \"total_hours\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/overtime",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"overtime"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:16:11 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96NVNMFSD1JXJG29DXR54Q"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"overtime/already-exists\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"date\": \"2025-06-17\",\r\n    \"total_hours\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/overtime",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"overtime"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:15:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96N1PBRPD49DZ4T9Q7BADH"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Attendance",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start_time\": \"2025-06-17T08:00:00Z\",\r\n    \"end_time\": \"2025-06-17T08:00:01Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/{{version}}/attendance",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"attendance"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:BAD_REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:09:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "145"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY969YJHXEA9QGF4CCP58S2B"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "15"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"field\": \"start_time\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        },\n        {\n            \"field\": \"end_time\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400:FORBIDDEN",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:05:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY962Q7414CRXZ781WF216X4"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/forbidden-access\"\n}"
+						},
+						{
+							"name": "400:MUST_SAME_DAY",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_time\": \"2025-06-18T08:00:00Z\",\r\n    \"end_time\": \"2025-06-19T08:00:01Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:11:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "48"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96CPKBZ65SNWCKT1YNBS64"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"attendance/must-same-day\"\n}"
+						},
+						{
+							"name": "400:MUST_WEEKDAY",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_time\": \"2025-06-21T08:00:00Z\",\r\n    \"end_time\": \"2025-06-21T08:00:01Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:11:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96DNKT2S8XPN5E0VEP2DJ7"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "29"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"attendance/must-weekday\"\n}"
+						},
+						{
+							"name": "400:MUST_TODAY",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_time\": \"2025-06-19T08:00:02Z\",\r\n    \"end_time\": \"2025-06-19T08:00:01Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:12:15 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96EPDJVV1C4HF9HHEFPSH9"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "55"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"attendance/must-today\"\n}"
+						},
+						{
+							"name": "400:INVALID_TIME_ORDER",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_time\": \"2025-06-19T08:00:02Z\",\r\n    \"end_time\": \"2025-06-19T08:00:01Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:13:06 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96G7VYEK7QQTAY5YJYDCY8"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"attendance/invalid-time-order\"\n}"
+						},
+						{
+							"name": "400:ALREADY_EXISTS",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_time\": \"2025-06-19T08:00:02Z\",\r\n    \"end_time\": \"2025-06-19T08:00:01Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:13:58 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "49"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96HV79TXMVAR83G621Q8YK"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "44"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"attendance/already-exists\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_time\": \"2025-06-17T08:00:00Z\",\r\n    \"end_time\": \"2025-06-17T08:00:01Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/attendance",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"attendance"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:14:19 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY96JFQGTAS4XCA0S2YJ4HP0"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "23"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Payroll",
+			"item": [
+				{
+					"name": "create-period",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start_date\": \"2025-08-10\",\r\n    \"end_date\": \"2025-08-15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/{{version}}/payroll/period",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"payroll",
+								"period"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:FORBIDDEN_ACCESS",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:43:53 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY988K6YP96FKRQ63RCNNRY9"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "60"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/forbidden-access\"\n}"
+						},
+						{
+							"name": "400:BAD_REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:44:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "145"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY9896GR1TFVTSZZEHJYT56Y"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "40"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"field\": \"start_date\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        },\n        {\n            \"field\": \"end_date\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400:ALREADY_EXISTS",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_date\": \"2025-06-18\",\r\n    \"end_date\": \"2025-06-20\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:44:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY989MST94HBH1F9C1RKX6AR"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "96"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "25"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/period-already-exists\"\n}"
+						},
+						{
+							"name": "400:INVALID_DATE_RANGE",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_date\": \"2025-06-25\",\r\n    \"end_date\": \"2025-06-20\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:45:06 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98AVK5SB7VJ1RR6C29VDH4"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "96"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "46"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll-period/invalid-date-range\"\n}"
+						},
+						{
+							"name": "400:OVERLAPPING",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_date\": \"2025-06-10\",\r\n    \"end_date\": \"2025-06-20\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:45:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "50"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98C52CKD033Y3X9DDRFVQ6"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "3"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/period-overlapping\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"start_date\": \"2025-06-10\",\r\n    \"end_date\": \"2025-06-15\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:46:11 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98CT9C1Z83FCS1C1BYGGX0"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "42"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "list-period",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/{{version}}/payroll/period?page&size",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"payroll",
+								"period"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "size",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/period?page&size",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"period"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": null
+										},
+										{
+											"key": "size",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:47:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "Content-Length",
+									"value": "538"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin,Accept-Encoding"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98FT7848Y5EKP4TE88A5TS"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "3"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"id\": \"01JY98CTBB8Y9VPH6FN8X9H1KA\",\n            \"start_date\": \"2025-06-10T00:00:00Z\",\n            \"end_date\": \"2025-06-15T00:00:00Z\",\n            \"processed_at\": null,\n            \"processed_by\": null,\n            \"created_at\": \"2025-06-21T19:46:11.819145+07:00\",\n            \"created_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"updated_at\": \"2025-06-21T19:46:11.91342+07:00\",\n            \"updated_by\": null\n        },\n        {\n            \"id\": \"01JY8V1VHBDSN6YCY707D4P7KR\",\n            \"start_date\": \"2025-06-18T00:00:00Z\",\n            \"end_date\": \"2025-06-20T00:00:00Z\",\n            \"processed_at\": \"2025-06-21T15:53:46.076637+07:00\",\n            \"processed_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"created_at\": \"2025-06-21T15:53:01.099995+07:00\",\n            \"created_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"updated_at\": \"2025-06-21T15:53:46.076637+07:00\",\n            \"updated_by\": null\n        },\n        {\n            \"id\": \"01JY8NN2NQKSZF9JYH9PN27QWE\",\n            \"start_date\": \"2025-06-21T00:00:00Z\",\n            \"end_date\": \"2025-06-21T00:00:00Z\",\n            \"processed_at\": \"2025-06-21T14:20:21.723545+07:00\",\n            \"processed_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"created_at\": \"2025-06-21T14:18:39.543228+07:00\",\n            \"created_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"updated_at\": \"2025-06-21T14:20:21.723545+07:00\",\n            \"updated_by\": null\n        },\n        {\n            \"id\": \"01JY8PAY18K09E1XS98GX8WC2K\",\n            \"start_date\": \"2025-06-22T00:00:00Z\",\n            \"end_date\": \"2025-06-22T00:00:00Z\",\n            \"processed_at\": \"2025-06-21T14:31:58.831334+07:00\",\n            \"processed_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"created_at\": \"2025-06-21T14:30:35.688573+07:00\",\n            \"created_by\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n            \"updated_at\": \"2025-06-21T14:31:58.831367+07:00\",\n            \"updated_by\": null\n        }\n    ],\n    \"paging\": {\n        \"page\": 1,\n        \"page_size\": 10,\n        \"total_item\": 4,\n        \"total_page\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "process",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"period_id\": \"01JY98XHPAK7Q8G45Z9SE6KJ7V\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/{{version}}/payroll/payslip",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"payroll",
+								"payslip"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:BAD_REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/process",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"process"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:48:31 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98H3P8KGN5NP50JRZRVNX8"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "21"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"field\": \"period_id\",\n            \"tag\": \"required\",\n            \"param\": \"\",\n            \"value\": \"\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400:PERIOD_NOT_FOUND",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"period_id\": \"01JY98JY3APD1M4H3N9SWS7VJ0\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/process",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"process"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:49:38 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "48"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98K4XQVPHY6HSMRVDAFK0F"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "14"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/period-not-found\"\n}"
+						},
+						{
+							"name": "400:ALREADY_PROCESSED",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"period_id\": \"01JY98CTBB8Y9VPH6FN8X9H1KA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/process",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"process"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:50:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "49"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98MC6JJ4Q3F6CH1CN2TJ1V"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "34"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/already-processed\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"period_id\": \"01JY98CTBB8Y9VPH6FN8X9H1KA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/process",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"process"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:50:09 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98M37SYRJX2HCJGCV7VJPH"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "43"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "get-payslip",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/{{version}}/payroll/payslip?period_id=01JY8V1VHBDSN6YCY707D4P7KR",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"payroll",
+								"payslip"
+							],
+							"query": [
+								{
+									"key": "period_id",
+									"value": "01JY8V1VHBDSN6YCY707D4P7KR"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:FORBIDDEN_ACCESS",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip?period_id=01JY98CTBB8Y9VPH6FN8X9H1KA",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY98CTBB8Y9VPH6FN8X9H1KA"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:54:20 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98VR7PN4HPAF862ASV55QG"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "99"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "4"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/forbidden-access\"\n}"
+						},
+						{
+							"name": "400:PERIOD_NOT_FOUND",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip?period_id=01JY98JY3APD1M4H3N9SWS7VJ0",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY98JY3APD1M4H3N9SWS7VJ0"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:54:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "48"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98WCZSK8GMNSYRTK6NAT64"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "43"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/period-not-found\"\n}"
+						},
+						{
+							"name": "400:NOT_PROCESSED",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip?period_id=01JY98XHPAK7Q8G45Z9SE6KJ7V",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY98XHPAK7Q8G45Z9SE6KJ7V"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:55:36 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY98Y1G4M166B07EW00T95M8"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "95"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "49"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/not-processed\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip?period_id=01JY8V1VHBDSN6YCY707D4P7KR",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY8V1VHBDSN6YCY707D4P7KR"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:56:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "Content-Length",
+									"value": "824"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin,Accept-Encoding"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY99039743EPYT8BV8V3WKZ2"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "42"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"employee_id\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n        \"attendances\": [\n            {\n                \"id\": \"01JY8QQZ1JE7HXDNVTRVXSEFQY\",\n                \"start_time\": \"2025-06-18T15:00:00+07:00\",\n                \"end_time\": \"2025-06-18T15:00:01+07:00\",\n                \"created_at\": \"2025-06-18T15:00:00+07:00\",\n                \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                \"updated_at\": \"2025-06-21T14:55:11.349973+07:00\",\n                \"updated_by\": null\n            },\n            {\n                \"id\": \"01JY7G6BCA7TNG9HDWBX5SJH5P\",\n                \"start_time\": \"2025-06-19T15:00:00+07:00\",\n                \"end_time\": \"2025-06-19T15:00:01+07:00\",\n                \"created_at\": \"2025-06-19T15:00:00+07:00\",\n                \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                \"updated_at\": \"2025-06-21T03:23:59.662771+07:00\",\n                \"updated_by\": null\n            }\n        ],\n        \"overtime\": {\n            \"total_item\": 2,\n            \"total_amount\": 644000,\n            \"total_hours\": 4,\n            \"overtimes\": [\n                {\n                    \"id\": \"01JY7H92CPVPVKQPBB1W29Q6RF\",\n                    \"date\": \"2025-06-19T00:00:00Z\",\n                    \"total_hours\": 3,\n                    \"created_at\": \"2025-06-21T03:42:57.302554+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-21T03:42:57.302554+07:00\",\n                    \"updated_by\": null\n                },\n                {\n                    \"id\": \"01JY8QSV140VXAD0X3JWHE217D\",\n                    \"date\": \"2025-06-18T00:00:00Z\",\n                    \"total_hours\": 1,\n                    \"created_at\": \"2025-06-21T14:56:12.708002+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-21T14:56:12.708002+07:00\",\n                    \"updated_by\": null\n                }\n            ]\n        },\n        \"reimbursement\": {\n            \"total_item\": 6,\n            \"total_amount\": 600000,\n            \"reimbursements\": [\n                {\n                    \"id\": \"01JY77YKF0VKX2JXNCMH82PQCB\",\n                    \"amount\": 100000,\n                    \"description\": \"Reimbursement for travel expenses\",\n                    \"created_at\": \"2025-06-21T00:59:57.15214+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-21T00:59:57.152654+07:00\",\n                    \"updated_by\": null\n                },\n                {\n                    \"id\": \"01JY780N7QDG9SZPDPHPNFH9P8\",\n                    \"amount\": 100000,\n                    \"description\": \"Reimbursement for travel expenses\",\n                    \"created_at\": \"2025-06-21T01:01:04.503733+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-21T01:01:04.503733+07:00\",\n                    \"updated_by\": null\n                },\n                {\n                    \"id\": \"01JY8QN536539V2P1R1B0SN9XE\",\n                    \"amount\": 100000,\n                    \"description\": \"Reimbursement for travel expenses\",\n                    \"created_at\": \"2025-06-21T14:53:39.174814+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-21T14:53:39.174814+07:00\",\n                    \"updated_by\": null\n                },\n                {\n                    \"id\": \"01JY7830ZYXVT61SFS8069TJG7\",\n                    \"amount\": 100000,\n                    \"description\": \"Reimbursement for travel expenses\",\n                    \"created_at\": \"2025-06-21T01:02:22.078575+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-19T14:53:10.401+07:00\",\n                    \"updated_by\": null\n                },\n                {\n                    \"id\": \"01JY7JNQYCRCY4QSW1JJTWV24S\",\n                    \"amount\": 100000,\n                    \"description\": \"Reimbursement for travel expenses\",\n                    \"created_at\": \"2025-06-21T04:07:21.1642+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-19T14:53:10.401+07:00\",\n                    \"updated_by\": null\n                },\n                {\n                    \"id\": \"01JY8QM9015ZPR3RHSKZRWKQ0J\",\n                    \"amount\": 100000,\n                    \"description\": \"Reimbursement for travel expenses\",\n                    \"created_at\": \"2025-06-21T14:53:10.40157+07:00\",\n                    \"created_by\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                    \"updated_at\": \"2025-06-19T14:53:10.401+07:00\",\n                    \"updated_by\": null\n                }\n            ]\n        },\n        \"basic_salary\": 3220000,\n        \"salary\": 1288000,\n        \"take_home_pay\": 1332000\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "get-payslip-report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostname}}/{{version}}/payroll/payslip/report?period_id=01JY8V1VHBDSN6YCY707D4P7KR",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"{{version}}",
+								"payroll",
+								"payslip",
+								"report"
+							],
+							"query": [
+								{
+									"key": "period_id",
+									"value": "01JY8V1VHBDSN6YCY707D4P7KR"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "400:FORBIDDEN",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip/report?period_id=01JY8V1VHBDSN6YCY707D4P7KR",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip",
+										"report"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY8V1VHBDSN6YCY707D4P7KR"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:57:53 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY9927YKG7DQD0HZM3KAN7G9"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "31"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"auth/forbidden-access\"\n}"
+						},
+						{
+							"name": "400:PERIOD_NOT_FOUND",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip/report?period_id=01JY98JY3APD1M4H3N9SWS7VJ0",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip",
+										"report"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY98JY3APD1M4H3N9SWS7VJ0"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:58:28 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "48"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY9939D7737C6HA4HW0DGCEV"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "97"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "57"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/period-not-found\"\n}"
+						},
+						{
+							"name": "400:NOT_PROCESSED",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip/report?period_id=01JY994MBT9P53ZAV8BK9BMJCG",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip",
+										"report"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY994MBT9P53ZAV8BK9BMJCG"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:59:31 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY9957K1C08FJHQXPGA2E1QK"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "96"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "53"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": \"payroll/not-processed\"\n}"
+						},
+						{
+							"name": "200:OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostname}}/{{version}}/payroll/payslip/report?period_id=01JY8V1VHBDSN6YCY707D4P7KR",
+									"host": [
+										"{{hostname}}"
+									],
+									"path": [
+										"{{version}}",
+										"payroll",
+										"payslip",
+										"report"
+									],
+									"query": [
+										{
+											"key": "period_id",
+											"value": "01JY8V1VHBDSN6YCY707D4P7KR"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "payslip-generator-service"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 21 Jun 2025 12:58:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2818"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin,Accept-Encoding"
+								},
+								{
+									"key": "X-Request-Id",
+									"value": "01JY993R92VNDFF00CS1418ZSQ"
+								},
+								{
+									"key": "X-Ratelimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "X-Ratelimit-Remaining",
+									"value": "96"
+								},
+								{
+									"key": "X-Ratelimit-Reset",
+									"value": "42"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"employees\": [\n            {\n                \"id\": \"01JY2PMV9XAB7ZNWDH23D1VJT0\",\n                \"username\": \"admin_user\",\n                \"basic_salary\": 7228000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2TGFAB0Y7B2ZPEJST\",\n                \"username\": \"emp_001\",\n                \"basic_salary\": 3220000,\n                \"salary\": 1288000,\n                \"take_home_pay\": 1332000\n            },\n            {\n                \"id\": \"01JY2PMVA2ZZNC3A2H94K8PX6F\",\n                \"username\": \"emp_002\",\n                \"basic_salary\": 5320000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2T95FZBB9A27T39E4\",\n                \"username\": \"emp_003\",\n                \"basic_salary\": 4125000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2RTQ1CQCEP3THMCJD\",\n                \"username\": \"emp_004\",\n                \"basic_salary\": 5197000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA24XAGP6JYCM9MSD3B\",\n                \"username\": \"emp_005\",\n                \"basic_salary\": 6357000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2TJFK7HHBZHX77YV5\",\n                \"username\": \"emp_006\",\n                \"basic_salary\": 3700000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2KTP0D6YDDQM51YAX\",\n                \"username\": \"emp_007\",\n                \"basic_salary\": 4994000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2TQSZQ1Y2BMC2M3HC\",\n                \"username\": \"emp_008\",\n                \"basic_salary\": 6930000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2DC31V0CFJQABQAHB\",\n                \"username\": \"emp_009\",\n                \"basic_salary\": 7762000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2PMJV42JH6TC027S7\",\n                \"username\": \"emp_010\",\n                \"basic_salary\": 3972000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA252RZHB2W993JWA8C\",\n                \"username\": \"emp_011\",\n                \"basic_salary\": 6354000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2P7MDEZFZP23J654D\",\n                \"username\": \"emp_012\",\n                \"basic_salary\": 5061000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2YFZDKMJA4Z7BFVDX\",\n                \"username\": \"emp_013\",\n                \"basic_salary\": 3239000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2MAPM927WHT30JGCJ\",\n                \"username\": \"emp_014\",\n                \"basic_salary\": 4128000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2WQH5DFX9GQGV04EP\",\n                \"username\": \"emp_015\",\n                \"basic_salary\": 6978000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA29KJR3TXNGAJT85W3\",\n                \"username\": \"emp_016\",\n                \"basic_salary\": 4061000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2WG4HHNJ8PFMGXBE6\",\n                \"username\": \"emp_017\",\n                \"basic_salary\": 6915000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA239YQ3RSNGTB2ZWXF\",\n                \"username\": \"emp_018\",\n                \"basic_salary\": 5531000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA20N288ZJSKPZYBTD2\",\n                \"username\": \"emp_019\",\n                \"basic_salary\": 4991000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA28XRZGNS5GVV2D4PQ\",\n                \"username\": \"emp_020\",\n                \"basic_salary\": 4304000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA21AEZFVFM40K91NPV\",\n                \"username\": \"emp_021\",\n                \"basic_salary\": 6739000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2T0AH53DNE59QP9A2\",\n                \"username\": \"emp_022\",\n                \"basic_salary\": 6613000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA207057ZFSTY46KV66\",\n                \"username\": \"emp_023\",\n                \"basic_salary\": 6774000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2AS7P06BN39KJ56G7\",\n                \"username\": \"emp_024\",\n                \"basic_salary\": 6198000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2KE4X25R8RB9ADGKV\",\n                \"username\": \"emp_025\",\n                \"basic_salary\": 6536000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA23XTCP7GJKE99PXRB\",\n                \"username\": \"emp_026\",\n                \"basic_salary\": 6249000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2AX3XZKV0J67FBYBV\",\n                \"username\": \"emp_027\",\n                \"basic_salary\": 3967000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA28NSH8SA64XZZMJNM\",\n                \"username\": \"emp_028\",\n                \"basic_salary\": 4328000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2T0SE8ZZNGCX8FPJY\",\n                \"username\": \"emp_029\",\n                \"basic_salary\": 7054000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2ZGKEVN7TRBT8BKZT\",\n                \"username\": \"emp_030\",\n                \"basic_salary\": 7026000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA29RKTPY5CS7RSYFZZ\",\n                \"username\": \"emp_031\",\n                \"basic_salary\": 4627000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA29SWF61Y6T89RJS7K\",\n                \"username\": \"emp_032\",\n                \"basic_salary\": 7623000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2GFKCQBY8C1PNNBMK\",\n                \"username\": \"emp_033\",\n                \"basic_salary\": 5156000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2E5GBQG0GDBT6N9D8\",\n                \"username\": \"emp_034\",\n                \"basic_salary\": 4262000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2588Q69VCTJ5ZAREN\",\n                \"username\": \"emp_035\",\n                \"basic_salary\": 4287000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2V4X3YF2EK0PQD6SH\",\n                \"username\": \"emp_036\",\n                \"basic_salary\": 5352000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA23CK65CZZV2CDDN41\",\n                \"username\": \"emp_037\",\n                \"basic_salary\": 4453000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA274DMBM1MN6JEEGHT\",\n                \"username\": \"emp_038\",\n                \"basic_salary\": 5832000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2QN6EBW5SMRF2432G\",\n                \"username\": \"emp_039\",\n                \"basic_salary\": 3124000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA23Y1BEH0G89FZ9QWV\",\n                \"username\": \"emp_040\",\n                \"basic_salary\": 6352000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2N7GBP9R318HAAVCT\",\n                \"username\": \"emp_041\",\n                \"basic_salary\": 7991000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA21P27FBK66P2K3MK6\",\n                \"username\": \"emp_042\",\n                \"basic_salary\": 7584000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2P4ZMJ46DA3T8321J\",\n                \"username\": \"emp_043\",\n                \"basic_salary\": 3514000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2YM4SJVQ2QM2APZA7\",\n                \"username\": \"emp_044\",\n                \"basic_salary\": 6875000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA250HS18N2HZVXVE3Y\",\n                \"username\": \"emp_045\",\n                \"basic_salary\": 5790000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2W0HWDMC5E1SK8C42\",\n                \"username\": \"emp_046\",\n                \"basic_salary\": 6470000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2P52WYYZCX82A4KCN\",\n                \"username\": \"emp_047\",\n                \"basic_salary\": 5768000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2DQ4Q6VBXA72CCMGD\",\n                \"username\": \"emp_048\",\n                \"basic_salary\": 5069000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2HCA1FV637CKDYM7K\",\n                \"username\": \"emp_049\",\n                \"basic_salary\": 6445000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2TZVJS4XM05YFACFP\",\n                \"username\": \"emp_050\",\n                \"basic_salary\": 6932000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA228ZF61V6XVDN7NCD\",\n                \"username\": \"emp_051\",\n                \"basic_salary\": 7713000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2711PWHZWQMP7D56P\",\n                \"username\": \"emp_052\",\n                \"basic_salary\": 4376000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2MTN6214V3VW4NJXP\",\n                \"username\": \"emp_053\",\n                \"basic_salary\": 3457000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2H3R5E7Z4DRYA02BP\",\n                \"username\": \"emp_054\",\n                \"basic_salary\": 6792000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2VNRDMWKYDHAQTN7R\",\n                \"username\": \"emp_055\",\n                \"basic_salary\": 3397000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2524HAV24H68DKJNH\",\n                \"username\": \"emp_056\",\n                \"basic_salary\": 3569000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA24ZXXBKX7327VPF4X\",\n                \"username\": \"emp_057\",\n                \"basic_salary\": 5051000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA29EX3YVYTG5S8FK69\",\n                \"username\": \"emp_058\",\n                \"basic_salary\": 6896000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2Y6S93C7KWFCX3F4F\",\n                \"username\": \"emp_059\",\n                \"basic_salary\": 6403000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2EJQYMCWWQPAY2NS7\",\n                \"username\": \"emp_060\",\n                \"basic_salary\": 7388000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA2SSRDWVGZRVWXF5BK\",\n                \"username\": \"emp_061\",\n                \"basic_salary\": 7308000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4RER1ZBYMQ3A37VN3\",\n                \"username\": \"emp_062\",\n                \"basic_salary\": 3289000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4GEMZKQHWM7Y5B3TY\",\n                \"username\": \"emp_063\",\n                \"basic_salary\": 5737000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4TH5ASRT4STC648H2\",\n                \"username\": \"emp_064\",\n                \"basic_salary\": 3188000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA45A3MYCN8775YAXTQ\",\n                \"username\": \"emp_065\",\n                \"basic_salary\": 6733000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4EGSH0B831J7S03Q4\",\n                \"username\": \"emp_066\",\n                \"basic_salary\": 3549000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4A1YVDR5RGQ8382Y6\",\n                \"username\": \"emp_067\",\n                \"basic_salary\": 5319000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4JC3KWJQHCWYCY8WV\",\n                \"username\": \"emp_068\",\n                \"basic_salary\": 6729000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4FQ5Z53JGNWKPD6VH\",\n                \"username\": \"emp_069\",\n                \"basic_salary\": 4831000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4YCAN646YGKTHPKN2\",\n                \"username\": \"emp_070\",\n                \"basic_salary\": 4067000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4ZFS5QFSCDFJCCEM1\",\n                \"username\": \"emp_071\",\n                \"basic_salary\": 5818000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4TAWXGYRGGGA0VJMF\",\n                \"username\": \"emp_072\",\n                \"basic_salary\": 4636000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA49YTNSTY12VGKW5M3\",\n                \"username\": \"emp_073\",\n                \"basic_salary\": 3703000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4KR22JFARGZDFK1PE\",\n                \"username\": \"emp_074\",\n                \"basic_salary\": 5182000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA49APP9PNHNEQDDZF4\",\n                \"username\": \"emp_075\",\n                \"basic_salary\": 4361000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA446SK45GJVE1TZHJD\",\n                \"username\": \"emp_076\",\n                \"basic_salary\": 6678000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA44HGMEXWT74HYYQH6\",\n                \"username\": \"emp_077\",\n                \"basic_salary\": 4130000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4WZYY1NCEWFM3D2M7\",\n                \"username\": \"emp_078\",\n                \"basic_salary\": 3883000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA44D5SVQXN4HH3PAX1\",\n                \"username\": \"emp_079\",\n                \"basic_salary\": 6851000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4NCN5AJ9HPRGVDQD8\",\n                \"username\": \"emp_080\",\n                \"basic_salary\": 7613000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA411AE15QGS3C9Y6WS\",\n                \"username\": \"emp_081\",\n                \"basic_salary\": 7365000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4EHPQ9EX9JWAVTDD9\",\n                \"username\": \"emp_082\",\n                \"basic_salary\": 3809000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4FRRXX5ER157DY5X7\",\n                \"username\": \"emp_083\",\n                \"basic_salary\": 7493000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA45EMY69YBT31RJHP3\",\n                \"username\": \"emp_084\",\n                \"basic_salary\": 4500000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4AWWC6GRBW17H9J7F\",\n                \"username\": \"emp_085\",\n                \"basic_salary\": 4973000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4X7ZCCSTJKNBD61EG\",\n                \"username\": \"emp_086\",\n                \"basic_salary\": 4905000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4Y01MW1DM06BD6Z2N\",\n                \"username\": \"emp_087\",\n                \"basic_salary\": 5191000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4JR6FR18DF17AFZY0\",\n                \"username\": \"emp_088\",\n                \"basic_salary\": 5504000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA48K4RGA3W492C87NE\",\n                \"username\": \"emp_089\",\n                \"basic_salary\": 6171000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4RNWTHVK02W88ZBRN\",\n                \"username\": \"emp_090\",\n                \"basic_salary\": 4650000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4F8DDWBTB19ZAV24S\",\n                \"username\": \"emp_091\",\n                \"basic_salary\": 7873000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4ZAFQGNV20F1TNES5\",\n                \"username\": \"emp_092\",\n                \"basic_salary\": 6562000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA43EWFFBSG9A49HN0G\",\n                \"username\": \"emp_093\",\n                \"basic_salary\": 7734000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4MW6C75ZT2GNE3XY3\",\n                \"username\": \"emp_094\",\n                \"basic_salary\": 5991000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4739SMWPWNC0C4M87\",\n                \"username\": \"emp_095\",\n                \"basic_salary\": 4588000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA47QDWW0RVHZNY1NE4\",\n                \"username\": \"emp_096\",\n                \"basic_salary\": 4149000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4YJ20RX4YSXECQMX3\",\n                \"username\": \"emp_097\",\n                \"basic_salary\": 3878000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4W18EETFN02RPJNE7\",\n                \"username\": \"emp_098\",\n                \"basic_salary\": 3775000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4F3A9J46PM0Z5P3MC\",\n                \"username\": \"emp_099\",\n                \"basic_salary\": 7251000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            },\n            {\n                \"id\": \"01JY2PMVA4YQPBT1718ZMYQ06Y\",\n                \"username\": \"emp_100\",\n                \"basic_salary\": 7514000,\n                \"salary\": 0,\n                \"take_home_pay\": 0\n            }\n        ],\n        \"total_basic_salary\": 557880000,\n        \"total_salary\": 1288000,\n        \"total_take_home_pay\": 1332000\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
