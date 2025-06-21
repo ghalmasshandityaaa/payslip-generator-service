@@ -48,3 +48,19 @@ func (a *EmployeeUseCase) GetById(ctx context.Context, employeeID ulid.ULID) (*e
 	a.Log.Trace("[END] - ", method)
 	return employee, nil
 }
+
+func (a *EmployeeUseCase) List(ctx context.Context) ([]entity.Employee, error) {
+	method := "EmployeeUseCase.List"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method)
+
+	db := a.DB.WithContext(ctx)
+
+	employees := make([]entity.Employee, 0)
+	if err := a.EmployeeRepository.FindAll(db, &employees); err != nil {
+		panic(err)
+	}
+
+	a.Log.Trace("[END] - ", method)
+	return employees, nil
+}

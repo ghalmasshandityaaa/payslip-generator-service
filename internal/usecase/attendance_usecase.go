@@ -8,6 +8,8 @@ import (
 	"payslip-generator-service/internal/repository"
 	"time"
 
+	ulid "payslip-generator-service/pkg/database/gorm"
+
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -89,7 +91,7 @@ func (a *AttendanceUseCase) Create(
 
 func (a *AttendanceUseCase) ListByPeriod(
 	ctx context.Context,
-	auth *model.Auth,
+	employeeID ulid.ULID,
 	startDate time.Time,
 	endDate time.Time,
 ) ([]entity.Attendance, error) {
@@ -99,7 +101,7 @@ func (a *AttendanceUseCase) ListByPeriod(
 
 	db := a.DB.WithContext(ctx)
 
-	attendances, err := a.AttendanceRepository.FindByPeriod(db, startDate, endDate)
+	attendances, err := a.AttendanceRepository.FindByPeriod(db, employeeID, startDate, endDate)
 	if err != nil {
 		panic(err)
 	}

@@ -128,7 +128,7 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 }
 
 func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
-	method := "PayrollHandler.ProcessPayroll"
+	method := "PayrollHandler.GetPayslip"
 	h.Log.Trace("[BEGIN] - ", method)
 
 	auth := middleware.GetAuth(ctx)
@@ -156,6 +156,40 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 	h.Log.Trace("[END] - ", method)
 
 	return ctx.JSON(model.WebResponse[*vm.Payslip]{
+		Ok:   true,
+		Data: data,
+	})
+}
+
+func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
+	method := "PayrollHandler.GetPayslipReport"
+	h.Log.Trace("[BEGIN] - ", method)
+
+	auth := middleware.GetAuth(ctx)
+
+	request := &model.GetPayslipRequest{
+		PeriodID: ctx.Query("period_id"),
+	}
+
+	errValidation := h.Validator.ValidateStruct(request)
+	if errValidation != nil {
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: errValidation,
+		})
+	}
+
+	data, err := h.UseCase.GetPayslipReport(ctx.UserContext(), request, auth)
+	if err != nil {
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: err.Error(),
+		})
+	}
+
+	h.Log.Trace("[END] - ", method)
+
+	return ctx.JSON(model.WebResponse[*vm.PayslipReport]{
 		Ok:   true,
 		Data: data,
 	})

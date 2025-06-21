@@ -33,6 +33,10 @@ func (r *Repository[T]) FindById(db *gorm.DB, entity *T, id ulid.ULID) error {
 	return db.Debug().Where("id = ?", id).Take(entity).Error
 }
 
+func (r *Repository[T]) FindAll(db *gorm.DB, entities *[]T) error {
+	return db.Debug().Find(entities).Error
+}
+
 func (r *Repository[T]) FindAllWithPagination(db *gorm.DB, pagination *model.PaginationOptions) ([]T, int64, error) {
 	var entities []T
 	query := db

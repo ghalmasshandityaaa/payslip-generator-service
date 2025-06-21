@@ -8,6 +8,8 @@ import (
 	"payslip-generator-service/internal/repository"
 	"time"
 
+	ulid "payslip-generator-service/pkg/database/gorm"
+
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -88,7 +90,7 @@ func (a *OvertimeUseCase) Create(
 }
 func (a *OvertimeUseCase) ListByPeriod(
 	ctx context.Context,
-	auth *model.Auth,
+	employeeID ulid.ULID,
 	startDate time.Time,
 	endDate time.Time,
 ) ([]entity.Overtime, error) {
@@ -98,7 +100,7 @@ func (a *OvertimeUseCase) ListByPeriod(
 
 	db := a.DB.WithContext(ctx)
 
-	overtimes, err := a.OvertimeRepository.FindByPeriod(db, startDate, endDate)
+	overtimes, err := a.OvertimeRepository.FindByPeriod(db, employeeID, startDate, endDate)
 	if err != nil {
 		panic(err)
 	}

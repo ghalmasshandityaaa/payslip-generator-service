@@ -120,9 +120,89 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WO
 ### Get Payslip
 GET http://localhost:3000/v1/payroll/payslip?period_id=01JY8V1VHBDSN6YCY707D4P7KR
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0OTk1OTQsImlhdCI6MTc1MDQ5NTk5NH0.hYRVFcZOIa5UIm1g2AUp1tOIkUkq2LXoVbgzMvq1vZg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTMwOTU0MDcsImlhdCI6MTc1MDUwMzQwN30.yJJe6YZNMU0N5gHIbrF3w37jq851MnlAMSk-MP2zy_0
 
 # Response:
 # {
-#   "ok": true
+#   "ok": true,
+#   "data": {
+#     "attendances": [
+#       "employee_id": "01JY2PMVA2TGFAB0Y7B2ZPEJST",
+#       {
+#         "id": "01JY8QQZ1JE7HXDNVTRVXSEFQY",
+#         "start_time": "2025-06-18T15:00:00+07:00",
+#         "end_time": "2025-06-18T15:00:01+07:00",
+#         "created_at": "2025-06-18T15:00:00+07:00",
+#         "created_by": "01JY2PMVA2TGFAB0Y7B2ZPEJST",
+#         "updated_at": "2025-06-21T14:55:11.349973+07:00",
+#         "updated_by": null
+#       }
+#     ],
+#     "overtime": {
+#       "total_item": 1,
+#       "total_amount": 100000,
+#       "total_hours": 3,
+#       "overtimes": [
+#         {
+#           "id": "01JY7H92CPVPVKQPBB1W29Q6RF",
+#           "date": "2025-06-19T00:00:00Z",
+#           "total_hours": 3,
+#           "created_at": "2025-06-21T03:42:57.302554+07:00",
+#           "created_by": "01JY2PMVA2TGFAB0Y7B2ZPEJST",
+#           "updated_at": "2025-06-21T03:42:57.302554+07:00",
+#           "updated_by": null
+#         }
+#       ]
+#     },
+#     "reimbursement": {
+#       "total_item": 1,
+#       "total_amount": 100000,
+#       "reimbursements": [
+#         {
+#           "id": "01JY76M1YPJ41HD3TP0625BCHB",
+#           "amount": 100000,
+#           "description": "Reimbursement for travel expenses",
+#           "created_at": "2025-06-21T00:36:42.966406+07:00",
+#           "created_by": "01JY2PMV9XAB7ZNWDH23D1VJT0",
+#           "updated_at": "2025-06-21T00:36:42.966406+07:00",
+#           "updated_by": null
+#         }
+#       ]
+#     },
+#     "basic_salary": 100000,
+#     "salary": 100000,
+#     "take_home_pay": 100000
+#   }
+# }
+
+
+### Get Payslip Report
+GET http://localhost:3000/v1/payroll/payslip/report?period_id=01JY8V1VHBDSN6YCY707D4P7KR
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MzA5NDQyNywiaWF0IjoxNzUwNTAyNDI3fQ.Zsx4vTh8bpw-Hm6iY2sadlPZGxY9fxeyoAKpOYf0VH8
+
+# Response:
+# {
+#   "ok": true,
+#   "data": {
+#     "employees": [
+#       {
+#         "id": "01JY2PMVA2TGFAB0Y7B2ZPEJST",
+#         "username": "emp_001",
+#         "basic_salary": 3220000,
+#         "salary": 2146666,
+#         "take_home_pay": 2149164
+#       },
+#       {
+#         "id": "01JY2PMVA2ZZNC3A2H94K8PX6F",
+#         "username": "emp_002",
+#         "basic_salary": 5320000,
+#         "salary": 0,
+#         "take_home_pay": 0
+#       }
+#     ],
+#     "total_basic_salary": 557880000,
+#     "total_salary": 2146666,
+#     "total_take_home_pay": 2149164
+#   }
 # }

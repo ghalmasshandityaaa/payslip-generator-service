@@ -2,6 +2,7 @@ package repository
 
 import (
 	"payslip-generator-service/internal/entity"
+	ulid "payslip-generator-service/pkg/database/gorm"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -27,12 +28,13 @@ func (a *OvertimeRepository) FindByDate(db *gorm.DB, date time.Time) (*entity.Ov
 	return &overtime, nil
 }
 
-func (a *OvertimeRepository) FindByPeriod(db *gorm.DB, startDate, endDate time.Time) ([]entity.Overtime, error) {
+func (a *OvertimeRepository) FindByPeriod(db *gorm.DB, employeeID ulid.ULID, startDate, endDate time.Time) ([]entity.Overtime, error) {
 	var overtimes []entity.Overtime
 
 	err := db.Debug().
 		Where("DATE(date) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
 		Where("DATE(created_at) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Where("created_by = ?", employeeID).
 		Find(&overtimes).Error
 
 	if err != nil {

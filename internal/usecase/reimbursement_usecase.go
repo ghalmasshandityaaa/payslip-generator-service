@@ -7,6 +7,8 @@ import (
 	"payslip-generator-service/internal/repository"
 	"time"
 
+	ulid "payslip-generator-service/pkg/database/gorm"
+
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -59,7 +61,7 @@ func (a *ReimbursementUseCase) Create(
 
 func (a *ReimbursementUseCase) ListByPeriod(
 	ctx context.Context,
-	auth *model.Auth,
+	employeeID ulid.ULID,
 	startDate time.Time,
 	endDate time.Time,
 ) ([]entity.Reimbursement, error) {
@@ -69,7 +71,7 @@ func (a *ReimbursementUseCase) ListByPeriod(
 
 	db := a.DB.WithContext(ctx)
 
-	reimbursements, err := a.ReimbursementRepository.FindByPeriod(db, startDate, endDate)
+	reimbursements, err := a.ReimbursementRepository.FindByPeriod(db, employeeID, startDate, endDate)
 	if err != nil {
 		panic(err)
 	}

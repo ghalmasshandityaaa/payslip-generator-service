@@ -2,6 +2,7 @@ package vm
 
 import (
 	"payslip-generator-service/internal/entity"
+	ulid "payslip-generator-service/pkg/database/gorm"
 )
 
 type reimbursementProps struct {
@@ -19,6 +20,7 @@ type overtimeProps struct {
 
 // Payslip model
 type Payslip struct {
+	EmployeeID    ulid.ULID           `json:"employee_id"`
 	Attendances   []entity.Attendance `json:"attendances"`
 	Overtime      overtimeProps       `json:"overtime"`
 	Reimbursement reimbursementProps  `json:"reimbursement"`
@@ -28,6 +30,7 @@ type Payslip struct {
 }
 
 type CreatePayslipProps struct {
+	EmployeeID    ulid.ULID
 	Attendance    []entity.Attendance
 	Overtime      []entity.Overtime
 	Reimbursement []entity.Reimbursement
@@ -75,6 +78,7 @@ func NewPayslip(props *CreatePayslipProps) *Payslip {
 	}
 
 	return &Payslip{
+		EmployeeID:  props.EmployeeID,
 		Attendances: attendances,
 		Overtime: overtimeProps{
 			TotalItem:   len(overtimes),

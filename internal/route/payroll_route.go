@@ -19,4 +19,7 @@ func (a *Route) SetupPayrollRoute() {
 
 	a.App.Get("/v1/payroll/payslip", a.AuthMiddleware, middleware.RoleMiddleware(model.RoleEmployee), a.PayrollHandler.GetPayslip)
 	a.Log.Info("mapped {/v1/payroll/payslip, GET} route")
+
+	a.App.Get("/v1/payroll/payslip/report", a.AuthMiddleware, middleware.RoleMiddleware(model.RoleAdmin), a.PayrollHandler.GetPayslipReport)
+	a.Log.Info("mapped {/v1/payroll/payslip/report, GET} route")
 }
