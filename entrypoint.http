@@ -3,7 +3,7 @@ POST http://localhost:3000/v1/auth/sign-in
 Content-Type: application/json
 
 {
-    "username": "admin_user",
+    "username": "emp_001",
     "password": "Password123!@#"
 }
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 ### Create Reimbursement
 POST http://localhost:3000/v1/reimbursement
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTcyMzQsImlhdCI6MTc1MDQ1MzYzNH0.mAvCjvepJZJ6h8A0bhhf_IcfNDpya0uaSFnBWFIy4fc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0OTU5NzcsImlhdCI6MTc1MDQ5MjM3N30.HhXpy4DBkaKELwmb9VqyzPLKuimNAw_kEXLmyT-GlMw
 
 {
     "amount": 100000,
@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 ### Create Attendance
 POST http://localhost:3000/v1/attendance
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTMyNTEsImlhdCI6MTc1MDQ0OTY1MX0.kn1D72aiXLoQ9K5UmcBbE_Zz445-m-8qWLXJV8lSKJo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0OTU5NzcsImlhdCI6MTc1MDQ5MjM3N30.HhXpy4DBkaKELwmb9VqyzPLKuimNAw_kEXLmyT-GlMw
 
 {
     "start_time": "2025-06-18T08:00:00Z",
@@ -46,7 +46,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 ### Create Overtime
 POST http://localhost:3000/v1/overtime
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0NTcyMzQsImlhdCI6MTc1MDQ1MzYzNH0.mAvCjvepJZJ6h8A0bhhf_IcfNDpya0uaSFnBWFIy4fc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0OTU5NzcsImlhdCI6MTc1MDQ5MjM3N30.HhXpy4DBkaKELwmb9VqyzPLKuimNAw_kEXLmyT-GlMw
 
 {
     "date": "2025-06-18",
@@ -61,11 +61,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQ
 ### Create Payroll Period
 POST http://localhost:3000/v1/payroll/period
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5Mzg4MSwiaWF0IjoxNzUwNDkwMjgxfQ.lP5u43JPR-1tCLMNhtXmkjIk4a0_6GEiT1ge3OXO2WA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5OTU2MSwiaWF0IjoxNzUwNDk1OTYxfQ.w-6kVSqWnYxYwr4Knnc1-VQW0uLamEuiWuph4rLbksk
 
 {
-    "start_date": "2025-06-22",
-    "end_date": "2025-06-22"
+    "start_date": "2025-06-18",
+    "end_date": "2025-06-20"
 }
 
 # Response:
@@ -77,7 +77,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WO
 ### List Payroll Period(With Pagination)
 GET http://localhost:3000/v1/payroll/period?page=1&size=10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5Mzg4MSwiaWF0IjoxNzUwNDkwMjgxfQ.lP5u43JPR-1tCLMNhtXmkjIk4a0_6GEiT1ge3OXO2WA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0OTk1OTQsImlhdCI6MTc1MDQ5NTk5NH0.hYRVFcZOIa5UIm1g2AUp1tOIkUkq2LXoVbgzMvq1vZg
 
 # Response:
 # {
@@ -105,11 +105,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WO
 ### Process Payroll Period
 POST http://localhost:3000/v1/payroll/process
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5Mzg4MSwiaWF0IjoxNzUwNDkwMjgxfQ.lP5u43JPR-1tCLMNhtXmkjIk4a0_6GEiT1ge3OXO2WA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WOVhBQjdaTldESDIzRDFWSlQwIiwiaXNfYWRtaW4iOnRydWUsImV4cCI6MTc1MDQ5OTU2MSwiaWF0IjoxNzUwNDk1OTYxfQ.w-6kVSqWnYxYwr4Knnc1-VQW0uLamEuiWuph4rLbksk
 
 {
-    "period_id": "01JY8PAY18K09E1XS98GX8WC2K"
+    "period_id": "01JY8V1VHBDSN6YCY707D4P7KR"
 }
+
+# Response:
+# {
+#   "ok": true
+# }
+
+
+### Get Payslip
+GET http://localhost:3000/v1/payroll/payslip?period_id=01JY8V1VHBDSN6YCY707D4P7KR
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxSlkyUE1WQTJUR0ZBQjBZN0IyWlBFSlNUIiwiaXNfYWRtaW4iOmZhbHNlLCJleHAiOjE3NTA0OTk1OTQsImlhdCI6MTc1MDQ5NTk5NH0.hYRVFcZOIa5UIm1g2AUp1tOIkUkq2LXoVbgzMvq1vZg
 
 # Response:
 # {

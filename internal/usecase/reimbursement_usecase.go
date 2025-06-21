@@ -5,6 +5,7 @@ import (
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/repository"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -54,4 +55,26 @@ func (a *ReimbursementUseCase) Create(
 	a.Log.Trace("[END] - ", method)
 
 	return nil
+}
+
+func (a *ReimbursementUseCase) ListByPeriod(
+	ctx context.Context,
+	auth *model.Auth,
+	startDate time.Time,
+	endDate time.Time,
+) ([]entity.Reimbursement, error) {
+	method := "ReimbursementUseCase.ListByPeriod"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, startDate, endDate)
+
+	db := a.DB.WithContext(ctx)
+
+	reimbursements, err := a.ReimbursementRepository.FindByPeriod(db, startDate, endDate)
+	if err != nil {
+		panic(err)
+	}
+
+	a.Log.Trace("[END] - ", method)
+
+	return reimbursements, nil
 }

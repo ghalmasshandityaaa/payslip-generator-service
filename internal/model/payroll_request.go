@@ -13,3 +13,7 @@ type CreatePayrollPeriodRequest struct {
 type ProcessPayrollRequest struct {
 	PeriodID string `json:"period_id" validate:"required,ulid"`
 }
+
+type GetPayslipRequest struct {
+	PeriodID string `json:"period_id" validate:"required,ulid"`
+}

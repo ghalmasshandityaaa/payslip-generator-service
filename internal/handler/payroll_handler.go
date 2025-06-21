@@ -6,6 +6,7 @@ import (
 	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
+	"payslip-generator-service/internal/vm"
 	"payslip-generator-service/pkg/validator"
 
 	"github.com/gofiber/fiber/v2"
@@ -123,5 +124,39 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 	h.Log.Trace("[END] - ", method)
 	return ctx.JSON(model.WebResponse[*model.CreatePayrollPeriodResponse]{
 		Ok: true,
+	})
+}
+
+func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
+	method := "PayrollHandler.ProcessPayroll"
+	h.Log.Trace("[BEGIN] - ", method)
+
+	auth := middleware.GetAuth(ctx)
+
+	request := &model.GetPayslipRequest{
+		PeriodID: ctx.Query("period_id"),
+	}
+
+	errValidation := h.Validator.ValidateStruct(request)
+	if errValidation != nil {
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: errValidation,
+		})
+	}
+
+	data, err := h.UseCase.GetPayslip(ctx.UserContext(), request, auth)
+	if err != nil {
+		return ctx.JSON(model.WebResponse[any]{
+			Ok:     false,
+			Errors: err.Error(),
+		})
+	}
+
+	h.Log.Trace("[END] - ", method)
+
+	return ctx.JSON(model.WebResponse[*vm.Payslip]{
+		Ok:   true,
+		Data: data,
 	})
 }

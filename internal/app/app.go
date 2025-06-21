@@ -40,7 +40,14 @@ func Bootstrap(config *BootstrapConfig) {
 	reimbursementUseCase := usecase.NewReimbursementUseCase(config.DB, config.Log, reimbursementRepository)
 	attendanceUseCase := usecase.NewAttendanceUseCase(config.DB, config.Log, attendanceRepository)
 	overtimeUseCase := usecase.NewOvertimeUseCase(config.DB, config.Log, overtimeRepository, attendanceRepository)
-	payrollUseCase := usecase.NewPayrollUseCase(config.DB, config.Log, payrollRepository)
+	payrollUseCase := usecase.NewPayrollUseCase(
+		config.DB, config.Log,
+		payrollRepository,
+		attendanceUseCase,
+		overtimeUseCase,
+		reimbursementUseCase,
+		employeeUseCase,
+	)
 
 	// init handlers
 	authHandler := handler.NewAuthHandler(authUseCase, config.Log, config.Config, config.Validator)

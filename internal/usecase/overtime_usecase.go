@@ -86,3 +86,24 @@ func (a *OvertimeUseCase) Create(
 
 	return nil
 }
+func (a *OvertimeUseCase) ListByPeriod(
+	ctx context.Context,
+	auth *model.Auth,
+	startDate time.Time,
+	endDate time.Time,
+) ([]entity.Overtime, error) {
+	method := "OvertimeUseCase.ListByPeriod"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, startDate, endDate)
+
+	db := a.DB.WithContext(ctx)
+
+	overtimes, err := a.OvertimeRepository.FindByPeriod(db, startDate, endDate)
+	if err != nil {
+		panic(err)
+	}
+
+	a.Log.Trace("[END] - ", method)
+
+	return overtimes, nil
+}

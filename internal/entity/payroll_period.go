@@ -47,12 +47,13 @@ func (p *PayrollPeriod) TableName() string {
 
 // GetDuration returns the duration of the payroll period
 func (p *PayrollPeriod) GetDuration() time.Duration {
-	return p.EndDate.Sub(p.StartDate)
+	endOfDay := time.Date(p.EndDate.Year(), p.EndDate.Month(), p.EndDate.Day(), 23, 59, 59, 999999999, p.EndDate.Location())
+	return endOfDay.Sub(p.StartDate)
 }
 
 // GetDurationInDays returns the duration in days
 func (p *PayrollPeriod) GetDurationInDays() int {
-	return int(p.GetDuration().Hours() / 24)
+	return int((p.GetDuration() + time.Millisecond).Hours() / 24)
 }
 
 // IsValidDateRange checks if the start date is before the end date

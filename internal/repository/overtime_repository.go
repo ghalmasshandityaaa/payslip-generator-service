@@ -26,3 +26,18 @@ func (a *OvertimeRepository) FindByDate(db *gorm.DB, date time.Time) (*entity.Ov
 	}
 	return &overtime, nil
 }
+
+func (a *OvertimeRepository) FindByPeriod(db *gorm.DB, startDate, endDate time.Time) ([]entity.Overtime, error) {
+	var overtimes []entity.Overtime
+
+	err := db.Debug().
+		Where("DATE(date) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Where("DATE(created_at) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Find(&overtimes).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return overtimes, nil
+}

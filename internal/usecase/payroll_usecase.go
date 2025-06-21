@@ -7,12 +7,13 @@ import (
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/repository"
+	"payslip-generator-service/internal/vm"
 	ulid "payslip-generator-service/pkg/database/gorm"
 	"time"
 
 	v2 "github.com/oklog/ulid/v2"
-
 	"github.com/sirupsen/logrus"
+	"golang.org/x/sync/errgroup"
 	"gorm.io/gorm"
 )
 
@@ -20,17 +21,29 @@ type PayrollUseCase struct {
 	DB                      *gorm.DB
 	Log                     *logrus.Logger
 	payrollPeriodRepository *repository.PayrollPeriodRepository
+	attendanceUseCase       *AttendanceUseCase
+	overtimeUseCase         *OvertimeUseCase
+	reimbursementUseCase    *ReimbursementUseCase
+	employeeUseCase         *EmployeeUseCase
 }
 
 func NewPayrollUseCase(
 	db *gorm.DB,
 	logger *logrus.Logger,
 	payrollPeriodRepository *repository.PayrollPeriodRepository,
+	attendanceUseCase *AttendanceUseCase,
+	overtimeUseCase *OvertimeUseCase,
+	reimbursementUseCase *ReimbursementUseCase,
+	employeeUseCase *EmployeeUseCase,
 ) *PayrollUseCase {
 	return &PayrollUseCase{
 		DB:                      db,
 		Log:                     logger,
 		payrollPeriodRepository: payrollPeriodRepository,
+		attendanceUseCase:       attendanceUseCase,
+		overtimeUseCase:         overtimeUseCase,
+		reimbursementUseCase:    reimbursementUseCase,
+		employeeUseCase:         employeeUseCase,
 	}
 }
 
@@ -142,4 +155,120 @@ func (a *PayrollUseCase) ProcessPayroll(ctx context.Context, request *model.Proc
 	a.Log.Trace("[END] - ", method)
 
 	return nil
+}
+
+func (a *PayrollUseCase) GetPayslip(ctx context.Context, request *model.GetPayslipRequest, auth *model.Auth) (*vm.Payslip, error) {
+	method := "PayrollUseCase.GetPayslip"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, request)
+
+	db := a.DB.WithContext(ctx)
+
+	payrollPeriod := new(entity.PayrollPeriod)
+	err := a.payrollPeriodRepository.FindById(db, payrollPeriod, ulid.ULID(v2.MustParse(request.PeriodID)))
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("payroll/period-not-found")
+		}
+		panic(err)
+	}
+
+	if !payrollPeriod.IsProcessed() {
+		return nil, fmt.Errorf("payroll/not-processed")
+	}
+
+	employee := new(entity.Employee)
+
+	var (
+		attendance    []entity.Attendance
+		overtime      []entity.Overtime
+		reimbursement []entity.Reimbursement
+	)
+
+	g, ctx := errgroup.WithContext(ctx)
+
+	g.Go(func() (returnErr error) {
+		defer func() {
+			if r := recover(); r != nil {
+				a.Log.Error("Panic in employee goroutine:", r)
+				if err, ok := r.(error); ok {
+					returnErr = err
+				} else {
+					returnErr = fmt.Errorf("panic: %v", r)
+				}
+			}
+		}()
+
+		var err error
+		employee, err = a.employeeUseCase.GetById(ctx, auth.ID)
+		return err
+	})
+	g.Go(func() (returnErr error) {
+		defer func() {
+			if r := recover(); r != nil {
+				a.Log.Error("Panic in attendance goroutine:", r)
+				if err, ok := r.(error); ok {
+					returnErr = err
+				} else {
+					returnErr = fmt.Errorf("panic: %v", r)
+				}
+			}
+		}()
+
+		var err error
+		attendance, err = a.attendanceUseCase.ListByPeriod(ctx, auth, payrollPeriod.StartDate, payrollPeriod.EndDate)
+		return err
+	})
+
+	g.Go(func() (returnErr error) {
+		defer func() {
+			if r := recover(); r != nil {
+				a.Log.Error("Panic in overtime goroutine:", r)
+				if err, ok := r.(error); ok {
+					returnErr = err
+				} else {
+					returnErr = fmt.Errorf("panic: %v", r)
+				}
+			}
+		}()
+
+		var err error
+		overtime, err = a.overtimeUseCase.ListByPeriod(ctx, auth, payrollPeriod.StartDate, payrollPeriod.EndDate)
+		return err
+	})
+
+	g.Go(func() (returnErr error) {
+		defer func() {
+			if r := recover(); r != nil {
+				a.Log.Error("Panic in reimbursement goroutine:", r)
+				if err, ok := r.(error); ok {
+					returnErr = err
+				} else {
+					returnErr = fmt.Errorf("panic: %v", r)
+				}
+			}
+		}()
+
+		var err error
+		reimbursement, err = a.reimbursementUseCase.ListByPeriod(ctx, auth, payrollPeriod.StartDate, payrollPeriod.EndDate)
+		return err
+	})
+
+	if err := g.Wait(); err != nil {
+		panic(err)
+	}
+
+	a.Log.Info("Generate payslip for period: ", payrollPeriod.StartDate, " to ", payrollPeriod.EndDate)
+
+	payslip := vm.NewPayslip(&vm.CreatePayslipProps{
+		Attendance:    attendance,
+		Overtime:      overtime,
+		Reimbursement: reimbursement,
+		PayrollPeriod: *payrollPeriod,
+		Salary:        employee.Salary,
+	})
+
+	a.Log.Trace("[END] - ", method)
+
+	return payslip, nil
 }

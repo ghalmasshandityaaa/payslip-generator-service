@@ -28,7 +28,7 @@
             "Audience": "https://payslip-generator-service.com",
             "Subject": "payslip_generator_service",
             "SigningMethod": "HS256",
-            "AccessTokenLifetime": 1,
+            "AccessTokenLifetime": 720,
             "AccessTokenSecret": "apaajayangpentingaman",
             "RefreshTokenLifetime": 720,
             "RefreshTokenSecret": "namagnitnepgnayajaapa"

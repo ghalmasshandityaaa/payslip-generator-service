@@ -86,3 +86,25 @@ func (a *AttendanceUseCase) Create(
 
 	return nil
 }
+
+func (a *AttendanceUseCase) ListByPeriod(
+	ctx context.Context,
+	auth *model.Auth,
+	startDate time.Time,
+	endDate time.Time,
+) ([]entity.Attendance, error) {
+	method := "AttendanceUseCase.ListByPeriod"
+	a.Log.Trace("[BEGIN] - ", method)
+	a.Log.Debug("request - ", method, startDate, endDate)
+
+	db := a.DB.WithContext(ctx)
+
+	attendances, err := a.AttendanceRepository.FindByPeriod(db, startDate, endDate)
+	if err != nil {
+		panic(err)
+	}
+
+	a.Log.Trace("[END] - ", method)
+
+	return attendances, nil
+}

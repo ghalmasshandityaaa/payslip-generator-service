@@ -26,3 +26,19 @@ func (a *AttendanceRepository) FindByDate(db *gorm.DB, date time.Time) (*entity.
 	}
 	return &attendance, nil
 }
+
+func (a *AttendanceRepository) FindByPeriod(db *gorm.DB, startDate, endDate time.Time) ([]entity.Attendance, error) {
+	var attendances []entity.Attendance
+
+	err := db.Debug().
+		Where("DATE(start_time) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Where("DATE(end_time) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Where("DATE(created_at) BETWEEN ? AND ?", startDate.Format(time.DateOnly), endDate.Format(time.DateOnly)).
+		Find(&attendances).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return attendances, nil
+}
