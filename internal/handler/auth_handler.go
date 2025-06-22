@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"payslip-generator-service/config"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
@@ -58,7 +57,7 @@ func (h *AuthHandler) SignIn(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	accessToken, refreshToken, err := h.UseCase.SignIn(requestCtx, request)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{

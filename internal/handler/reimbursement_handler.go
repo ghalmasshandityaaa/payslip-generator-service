@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"payslip-generator-service/internal/middleware"
 	"payslip-generator-service/internal/model"
 	"payslip-generator-service/internal/usecase"
@@ -57,7 +56,7 @@ func (h *ReimbursementHandler) Create(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	err := h.UseCase.Create(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{

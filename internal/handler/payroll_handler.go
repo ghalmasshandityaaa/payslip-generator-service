@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"math"
 	"payslip-generator-service/internal/entity"
 	"payslip-generator-service/internal/middleware"
@@ -52,7 +51,7 @@ func (h *PayrollHandler) ListPeriod(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	data, total, err := h.UseCase.ListPeriod(requestCtx, request)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
@@ -104,7 +103,7 @@ func (h *PayrollHandler) CreatePeriod(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	err := h.UseCase.CreatePeriod(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
@@ -147,7 +146,7 @@ func (h *PayrollHandler) ProcessPayroll(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	err := h.UseCase.ProcessPayroll(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
@@ -190,7 +189,7 @@ func (h *PayrollHandler) GetPayslip(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	data, err := h.UseCase.GetPayslip(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
@@ -235,7 +234,7 @@ func (h *PayrollHandler) GetPayslipReport(ctx *fiber.Ctx) error {
 	}
 
 	// Create context with request_id
-	requestCtx := context.WithValue(ctx.UserContext(), "request_id", logger.GetRequestID(ctx))
+	requestCtx := ctx.UserContext()
 	data, err := h.UseCase.GetPayslipReport(requestCtx, request, auth)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(model.WebResponse[any]{
